@@ -4,9 +4,10 @@
 
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #e5e5e5;
 }
 
-header {
+.buzz-quizz-title {
     background-color: #EC362D;
     width: 100%;
     height: 69px;
@@ -17,16 +18,72 @@ header {
     font-size: roboto;
     font-weight: 700;
     font-size: 37px;
-    color: #ffffff;
+    color: #FFFFFF;
     position: fixed;
     top: 0;
     left: 0;
 }
 
+.quiz-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 146px;
+}
+
+.empty-quiz-list {
+    background-color: #FAFAFA;
+    border-radius: 5px;
+    border: 1px #D4D4D4 dashed;
+    width: 1051px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.empty-quiz-list span {
+    width: 250px;
+    display: flex;
+    text-align: center;
+    font-family: roboto;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #B9B9B9;
+    margin-top: 30px;
+}
+
+.create-quiz-button {
+    border-radius: 50px;
+    border: 1px dashed #EC362D;
+    color: #EC362D;
+    font-family: roboto;
+    font-weight: 400;
+    font-size: 21px;
+    padding: 8px 24px;
+    margin: 31px auto;
+}
+
+.quiz-page {
+    margin-top: 69px;
+}
+
+.quiz-page .quiz-title {
+    width: 100%;
+    height: 18vw;
+    line-height: 18vw;
+    position: relative;
+    background: url('https://img.quizur.com/f/img60229135637eb5.97078183.jpg?lastEdited=1612878137');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.57);
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 3vw;
+}
+
 .new-quiz-screen {
     width: 100vw;
     height: 100vw;
-    background-color: #e5e5e5;
     padding-top: 69px;
 }
 
@@ -79,6 +136,13 @@ header {
     color: #FFF5F4;
     font-size: 21px;
     font-weight: 400;
+}
+
+@media (max-width: 1100px) {
+    .quiz-page .quiz-title {
+        height: 142px;
+        line-height: 142px;
+    }
 }
 
 .hidden {
