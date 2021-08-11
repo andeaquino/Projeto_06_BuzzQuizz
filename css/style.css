@@ -4,7 +4,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #e5e5e5;
+    background-color: #FAFAFA;
 }
 
 .buzz-quizz-title {
@@ -82,54 +82,50 @@ body {
 }
 
 .new-quiz-screen {
-    width: 100vw;
-    height: 100vw;
-    padding-top: 69px;
-}
-
-.new-quiz-screen .basic-info-screen {
-    width: 100%;
+    width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0px auto;
 }
 
-.new-quiz-screen .basic-info-screen span {
+.new-quiz-screen .title {
     font-size: 23px;
     font-weight: 700;
-    padding: 71px 0px 27px;
+    padding: 140px 0px 27px;
 }
 
-.new-quiz-screen .basic-info-screen div {
-    width: 600px;
-    height: 256px;
+.new-quiz-screen div {
+    width: 100%;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
     padding: 21px 20px 24px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.new-quiz-screen .basic-info-screen div input {
-    width: 100%;
+.new-quiz-screen div input {
+    width: 564px;
     height: 46px;
     padding-left: 24px;
     border: solid 1px #d1d1d1;
     border-radius: 5px;
     font-size: 19px;
     font-weight: 400;
+    margin-bottom: 9px;
 }
 
-.new-quiz-screen .basic-info-screen div input::placeholder {
+.new-quiz-screen div input:last-child {
+    margin-bottom: 0px;
+}
+
+.new-quiz-screen div input::placeholder {
     font-style: italic;
     color: #bababa;
 }
 
-.new-quiz-screen .basic-info-screen button {
-    width: 325px;
+.new-quiz-screen button.forward {
+    width: min(80vw,370px);
     height: 54px;
-    margin-top: 85px;
+    margin: 85px 0px 10px;
     background-color: #EC362D;
     border: none;
     border-radius: 15px;
@@ -143,6 +139,16 @@ body {
         height: 142px;
         line-height: 142px;
     }
+
+    .new-quiz-screen,
+    .new-quiz-screen div input {
+        width: 100%;
+    }
+
+    .new-quiz-screen button.forward {
+        font-size: 18px;
+    }
+
 }
 
 .hidden {
