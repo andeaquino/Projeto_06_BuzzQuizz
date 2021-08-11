@@ -62,35 +62,43 @@ body {
     padding: 8px 24px;
     margin: 31px auto;
 }
+
 .your-quizzes {
     width: 1051px;
 }
+
 .your-quizzes-add {
     display: flex;
     align-items: center;
 }
+
 .your-quizzes-add h1 {
     font-family: roboto;
     font-weight: 700;
     font-size: 20px;
 }
+
 .your-quizzes-add ion-icon {
     font-size: 30px;
     color: #EC362D;
     margin: auto 16px;
 }
+
 .your-quizzes-thumbs {
     display: flex;
 }
+
 .quiz-thumb {
     position: relative;
     margin: 10px 15px 0px 0px;
 }
+
 .quiz-thumb img {
     width: 340px;
     height: 181px;
     border-radius: 5px;
 }
+
 .quiz-thumb-title {
     position: absolute;
     bottom: 0;
