@@ -15,7 +15,66 @@
 </head>
 <body>
     <header>BuzzQuizz</header>
-    
+
+    <section class="new-quiz-screen">
+        <div class="basic-info-screen">
+            <span>Comece pelo começo</span>
+            <div>
+                <input type="text" placeholder="Título do seu quizz">
+                <input type="text" placeholder="URL da imagem do seu quizz">
+                <input type="text" placeholder="Quantidade de perguntas do quizz">
+                <input type="text" placeholder="Quantidade de níveis do quizz">
+            </div>
+            <button>Prosseguir pra criar perguntas</button>
+        </div>
+
+        <div class="new-questions-screen hidden">
+            <span>Crie suas perguntas</span>
+            <div>
+                <span>Pergunta 1</span>
+                <div>
+                    <input type="text" placeholder="Texto da pergunta">
+                    <input type="text" placeholder="Cor de fundo da pergunta">
+                    <span>Resposta correta</span>
+                    <input type="text" placeholder="Resposta correta">
+                    <input type="text" placeholder="URL da imagem">
+                    <span>Respostas incorretas</span>
+                    <input type="text" placeholder="Resposta incorreta 1">
+                    <input type="text" placeholder="URL da imagem 1">
+                    <input type="text" placeholder="Resposta incorreta 2">
+                    <input type="text" placeholder="URL da imagem 2">
+                    <input type="text" placeholder="Resposta incorreta 3">
+                    <input type="text" placeholder="URL da imagem 3">
+                </div>
+                <ion-icon name="create-sharp"></ion-icon>
+            </div>
+
+        </div>
+
+        <div class="new-levels-screen hidden">
+            <span>Agora, decida os níveis!</span>
+            <div>
+                <span>Nível 1</span>
+                <div>
+                    <input type="text" placeholder="Título do nível">
+                    <input type="text" placeholder="% de acerto">
+                    <input type="text" placeholder="URL da imagem do nível">
+                    <textarea id="story" placeholder="Descrição do nível" name="story" rows="5" cols="33"></textarea>
+                </div>
+                <ion-icon name="create-sharp"></ion-icon>
+            </div>
+        </div>
+
+        <div class="finish-quiz-creation-screen hidden">
+            <span>Seu quizz está pronto!</span>
+            <div>
+                <img>
+                <button>Acessar Quizz</button>
+                <button>Voltar para home</button>
+            </div>
+        </div>
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="script.js"></script>

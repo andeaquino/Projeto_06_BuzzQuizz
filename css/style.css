@@ -22,3 +22,65 @@ header {
     top: 0;
     left: 0;
 }
+
+.new-quiz-screen {
+    width: 100vw;
+    height: 100vw;
+    background-color: #e5e5e5;
+    padding-top: 69px;
+}
+
+.new-quiz-screen .basic-info-screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-quiz-screen .basic-info-screen span {
+    font-size: 23px;
+    font-weight: 700;
+    padding: 71px 0px 27px;
+}
+
+.new-quiz-screen .basic-info-screen div {
+    width: 600px;
+    height: 256px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+    padding: 21px 20px 24px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.new-quiz-screen .basic-info-screen div input {
+    width: 100%;
+    height: 46px;
+    padding-left: 24px;
+    border: solid 1px #d1d1d1;
+    border-radius: 5px;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.new-quiz-screen .basic-info-screen div input::placeholder {
+    font-style: italic;
+    color: #bababa;
+}
+
+.new-quiz-screen .basic-info-screen button {
+    width: 325px;
+    height: 54px;
+    margin-top: 85px;
+    background-color: #EC362D;
+    border: none;
+    border-radius: 15px;
+    color: #FFF5F4;
+    font-size: 21px;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none !important;
+}
