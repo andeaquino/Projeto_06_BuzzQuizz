@@ -240,14 +240,12 @@ body {
     margin-top: 20px;
     margin: 57px auto 20px;
     background-color: #EC362D;
-    border: none;
     border-radius: 15px;
     font-size: 21px;
     color: #FFF5F4;
 }
 
 .quiz-page .home-button {
-    border: none;
     display: block;
     margin: 0 auto 50px;
     color: #818181;
