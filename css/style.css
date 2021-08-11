@@ -6,7 +6,7 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-header {
+.buzz-quizz-title {
     background-color: #EC362D;
     width: 100%;
     height: 69px;
@@ -21,6 +21,7 @@ header {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
 .hidden {
@@ -34,20 +35,105 @@ header {
 .quiz-page .quiz-title {
     width: 100%;
     height: 18vw;
-    line-height: 18vw;
     position: relative;
     background: url('https://img.quizur.com/f/img60229135637eb5.97078183.jpg?lastEdited=1612878137');
     background-size: cover;
     background-position: center;
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.57);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     color: #FFFFFF;
-    font-size: 3vw;
+    font-size: 39px;
+}
+
+.quiz-page .question {
+    width: 759px;
+    height: 676px;
+    margin: 40px auto;
+    padding-top: 25px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+}
+
+.quiz-page .question img {
+    object-fit: fill;
+}
+
+.quiz-page .question .question-title {
+    width: 688px;
+    height: 138px;
+    margin: 0 35px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    background-color: #FF0000;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.quiz-page .question .answers {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 35px;
+}
+
+.quiz-page .question .answers .option {
+    width: 45.5%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 28px;
+    margin-bottom: 12px;  
+}
+
+.quiz-page .question .answers .option span {
+    padding: 15px 0;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;  
 }
 
 @media (max-width: 1100px) {
     .quiz-page .quiz-title {
         height: 142px;
-        line-height: 142px;
+        font-size: 19px;
+    }
+
+    .quiz-page .question {
+        width: 100%;
+        height: 100%;
+        margin-top: 20px;
+        padding: 20px 15px 0;
+    }
+
+    .quiz-page .question .question-title {
+        width: 100%;
+        height: 89px;
+        margin: 0;
+        margin-bottom: 25px;
+        font-size: 19px;
+        padding: 0 15px;
+    }
+
+    .quiz-page .question .answers {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
+    .quiz-page .question .answers .option {
+        width: 49%;
+        margin-right: 2%;
+        
+    }
+
+    .quiz-page .question .answers .option:nth-child(even) {
+        margin-right: 0;
+    }
+
+    .quiz-page .question .answers .option span {
+        font-size: 13px;
     }
 }
