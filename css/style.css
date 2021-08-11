@@ -233,6 +233,28 @@ body {
     padding-right: 21px;
 }
 
+.quiz-page .restart-button {
+    width: 260px;
+    height: 52px;
+    display: block;
+    margin-top: 20px;
+    margin: 57px auto 20px;
+    background-color: #EC362D;
+    border: none;
+    border-radius: 15px;
+    font-size: 21px;
+    color: #FFF5F4;
+}
+
+.quiz-page .home-button {
+    border: none;
+    display: block;
+    margin: 0 auto 50px;
+    color: #818181;
+    font-size: 21px;
+    background-color: inherit;
+}
+
 .new-quiz-screen {
     width: 600px;
     display: flex;
@@ -387,7 +409,18 @@ body {
         padding-right: 0;
         padding-bottom: 15px;
     }
-    
+
+    .quiz-page .restart-button {
+        width: 260px;
+        height: 52px;
+        margin: 34px auto 12px;
+        font-size: 18px;
+    }
+
+    .quiz-page .home-button {
+        font-size: 18px;
+    }
+
     .new-quiz-screen,
     .new-quiz-screen div input {
         width: 100%;
