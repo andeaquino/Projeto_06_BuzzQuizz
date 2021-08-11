@@ -7,7 +7,7 @@ body {
     background-color: #FAFAFA;
 }
 
-header {
+.buzz-quizz-title {
     background-color: #EC362D;
     width: 100%;
     height: 69px;
@@ -24,7 +24,6 @@ header {
     left: 0;
 }
 
-<<<<<<< HEAD
 .quiz-list {
     display: flex;
     justify-content: center;
@@ -59,9 +58,6 @@ header {
     font-size: 21px;
     padding: 8px 24px;
     margin: 31px auto;
-=======
-.hidden {
-    display: none;
 }
 
 .quiz-page {
@@ -87,5 +83,8 @@ header {
         height: 142px;
         line-height: 142px;
     }
->>>>>>> 206eed4e047beebef3ffcf44c477767e62b0faa6
+}
+
+.hidden {
+    display: none;
 }
