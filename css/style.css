@@ -188,7 +188,7 @@ body {
     display: flex;
     flex-direction: column;
     margin-right: 28px;
-    margin-bottom: 12px;  
+    margin-bottom: 12px; 
 }
 
 .quiz-page .question .answers .option span {
@@ -196,6 +196,18 @@ body {
     font-weight: 700;
     font-size: 20px;
     color: #000000;  
+}
+
+.quiz-page .question .answers .wrong span {
+    color: #FF4B4B;
+}
+
+.quiz-page .question .answers .correct span {
+    color: #009C22;
+}
+
+.quiz-page .question .answers .not-selected {
+    opacity: 30%;
 }
 
 .quiz-page .result {
