@@ -22,7 +22,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
 }
 
 .quiz-list {
@@ -138,16 +138,31 @@ body {
     width: 100%;
     height: 18vw;
     position: relative;
-    background: url('https://img.quizur.com/f/img60229135637eb5.97078183.jpg?lastEdited=1612878137');
-    background-size: cover;
-    background-position: center;
-    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.57);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: #FFFFFF;
     font-size: 39px;
+    overflow: hidden
+}
+
+.quiz-page .quiz-title span {
+    z-index: 1;
+}
+
+.quiz-page .quiz-title img {
+    object-fit: cover;
+    width: 100%;
+    position: absolute;
+}
+
+.quiz-page .quiz-title .shadow {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.57);
 }
 
 .quiz-page .question {
