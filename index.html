@@ -15,12 +15,13 @@
 </head>
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
-    <div class="quiz-list hidden">
-        <div class="empty-quiz-list hidden">
+
+    <div class="quiz-list">
+        <div class="empty-quiz-list">
             <span>Você não criou nenhum quizz ainda :(</span>
             <div class="create-quiz-button">Criar Quizz</div>
         </div>
-        <div class="your-quizzes">
+        <div class="your-quizzes hidden">
             <header>
                 <h1>Seus Quizzes</h1>
                 <ion-icon name="add-circle"></ion-icon>
@@ -73,10 +74,15 @@
                     <img src="/media/Test-Image.png" alt="Test Image">
                     <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
                 </li>
+                <li class="quiz-thumb">
+                    <img src="/media/Test-Image.png" alt="Test Image">
+                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
+                </li>
             </ul>
         </div>
     </div>
-    <main class="quiz-page">
+
+    <main class="quiz-page hidden">
         <header class="quiz-title">O quanto você conhece de Friends?</header>
         <section class="question">
             <header class="question-title">Em que episódio ocorre o casamento de Monica e Chandler?</header>
