@@ -21,9 +21,39 @@ function getServerQuizzes() {
     promise.then(updateQuizzes);
 }
 
+function randomize() { 
+	return Math.random() - 0.5; 
+}
+
 function switchToQuizzPage(quiz) {
-    // Insert here the code to prepare the quiz page 2
-    // Keep in mind that "quiz" have all the elements needed for the construction of the page 2
+    const title = document.querySelector(".quiz-title");
+    title.innerText = quiz.data.title;
+    const banner = document.querySelector(".banner-image");
+    banner.src = quiz.data.image;
+    const questions = document.querySelector(".quiz-questions");
+    questions.innerHTML = "";
+
+    for (let i = 0; i < quiz.data.questions.length; i++) {
+        let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
+        answers = ""
+        
+        for (let j = 0; j < randomAnswers.length; j++) {
+            answers += 
+            `<li class="option">
+                <img src="${randomAnswers[j].image}" alt="Option Imagem">
+                <span>${randomAnswers[j].text}</span>
+            </li>`;
+        }
+
+        questions.innerHTNL = 
+        `<section class="question">
+            <header class="question-title" style="background-color:${quiz.data.questions[i].color}">${quiz.data.questions[i].title}</header>
+            <ul class="answers">
+                ${answers}
+            </ul>
+        </section>`;
+    }
+    
     document.querySelector(".quiz-list").classList.add("hidden");
     document.querySelector(".quiz-page").classList.remove("hidden");
 }
@@ -32,5 +62,6 @@ function playQuizz(quizID) {
     const promise = axios.get(URL_QUIZZ + "/" + quizID);
     promise.then(switchToQuizzPage);
 }
+
 
 getServerQuizzes();
