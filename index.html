@@ -110,7 +110,7 @@
 
     <section class="new-quiz-screen hidden">
         <span class = "title">Comece pelo começo</span>
-        <div>
+        <div class = "new-basic-info">
             <input type="text" placeholder="Título do seu quizz">
             <input type="text" placeholder="URL da imagem do seu quizz">
             <input type="text" placeholder="Quantidade de perguntas do quizz">
@@ -148,7 +148,7 @@
         <button class = "forward">Prosseguir para criar níveis</button>
     </section>
     
-    <section class="new-quiz-screen">
+    <section class="new-quiz-screen hidden">
         <span class = "title">Agora, decida os níveis!</span>
         <ul class="new-levels">
             <li>
@@ -170,13 +170,13 @@
     </section>
     
     <section class="new-quiz-screen hidden">
-        <span>Seu quizz está pronto!</span>
-        <div>
-            <img>
+        <span class = "title">Seu quizz está pronto!</span>
+        <div class="new-quiz-layout">
+            <img src="media/Test-Image.png">
             <span>O quão Potterhead você é?</span>
         </div>
-        <button>Acessar Quizz</button>
-        <button>Voltar para home</button>
+        <button class = "forward">Acessar Quizz</button>
+        <button class="return-homescreen">Voltar para home</button>
     </section>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
