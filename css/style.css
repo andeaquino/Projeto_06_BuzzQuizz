@@ -66,6 +66,10 @@ body {
     margin: 31px auto;
 }
 
+.your-quizzes {
+    width: 100%;
+}
+
 .your-quizzes header {
     display: flex;
     align-items: center;
@@ -125,6 +129,7 @@ body {
 }
 
 .list-of-all-quizzes {
+    width: 100%;
     margin: 48px 0px;
 }
 
