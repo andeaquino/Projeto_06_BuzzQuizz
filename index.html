@@ -16,7 +16,7 @@
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
 
-    <div class="quiz-list">
+    <div class="quiz-list hidden">
         <div class="empty-quiz-list">
             <span>Você não criou nenhum quizz ainda :(</span>
             <div class="create-quiz-button">Criar Quizz</div>
@@ -118,7 +118,7 @@
     </main>
 
     <section class="new-quiz-screen">
-        <div class ="basic-info-screen hidden">
+        <div class ="basic-info-screen">
             <span class = "title">Comece pelo começo</span>
             <div class = "new-basic-info">
                 <input type="text" placeholder="Título do seu quizz">
@@ -126,7 +126,7 @@
                 <input type="text" placeholder="Quantidade de perguntas do quizz">
                 <input type="text" placeholder="Quantidade de níveis do quizz">
             </div>
-            <button class = "forward">Prosseguir pra criar perguntas</button>
+            <button class = "forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>
         </div>
         <div class="new-questions-screen hidden">
             <span class = "title">Crie suas perguntas</span>

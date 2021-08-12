@@ -326,6 +326,15 @@ body {
     font-weight: 400;
 }
 
+.new-quiz-screen button.forward img {
+    width: 54px;
+    height: 54px;
+}
+
+.new-quiz-screen button.forward.selected {
+    margin-top: 5px;
+}
+
 .new-quiz-screen li {
     width: 100%;
     background-color: #FFFFFF;
