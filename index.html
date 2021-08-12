@@ -16,15 +16,15 @@
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
 
-    <div class="quiz-list hidden">
+    <div class="quiz-list">
         <div class="empty-quiz-list">
             <span>Você não criou nenhum quizz ainda :(</span>
-            <div class="create-quiz-button">Criar Quizz</div>
+            <div class="create-quiz-button" onclick="switchPage('quiz-list', 'new-quiz-screen')">Criar Quizz</div>
         </div>
         <div class="your-quizzes hidden">
             <header>
                 <h1>Seus Quizzes</h1>
-                <ion-icon name="add-circle"></ion-icon>
+                <ion-icon name="add-circle" onclick="switchPage('quiz-list', 'new-quiz-screen')"></ion-icon>
             </header>
             <ul>
                 <li class="quiz-thumb">
@@ -97,7 +97,7 @@
 
     </main>
 
-    <section class="new-quiz-screen">
+    <section class="new-quiz-screen hidden">
         <div class ="basic-info-screen">
             <span class = "title">Comece pelo começo</span>
             <div class = "new-basic-info">
