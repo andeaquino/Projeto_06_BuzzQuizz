@@ -32,7 +32,7 @@ function randomize() {
 	return Math.random() - 0.5; 
 }
 
-function switchToQuizzPage(quiz) {
+function switchToQuizz(quiz) {
     const title = document.querySelector(".quiz-title");
     title.innerText = quiz.data.title;
     const banner = document.querySelector(".banner-image");
@@ -61,13 +61,17 @@ function switchToQuizzPage(quiz) {
         </section>`;
     }
     
-    document.querySelector(".quiz-list").classList.add("hidden");
-    document.querySelector(".quiz-page").classList.remove("hidden");
+    switchPage("quiz-list", "quiz-page")
+}
+
+function switchPage(pageFrom, pageTo) {
+    document.querySelector(`.${pageFrom}`).classList.add("hidden");
+    document.querySelector(`.${pageTo}`).classList.remove("hidden");
 }
 
 function playQuizz(quizID) {
     const promise = axios.get(URL_QUIZZ + "/" + quizID);
-    promise.then(switchToQuizzPage);
+    promise.then(switchToQuizz);
 }
 
 function animateButton(thisButton) {
