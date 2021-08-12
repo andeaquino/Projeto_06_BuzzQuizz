@@ -15,31 +15,36 @@
 </head>
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
-    <div class="quiz-list hidden">
-        <div class="empty-quiz-list hidden">
+
+    <div class="quiz-list">
+        <div class="empty-quiz-list">
             <span>Você não criou nenhum quizz ainda :(</span>
             <div class="create-quiz-button">Criar Quizz</div>
         </div>
-        <div class="your-quizzes">
+        <div class="your-quizzes hidden">
             <header>
                 <h1>Seus Quizzes</h1>
                 <ion-icon name="add-circle"></ion-icon>
             </header>
             <ul>
                 <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
+                    <div class="thumb grad"></div>
+                    <img src="/media/Test-Image.jpg" alt="Test Image">
                     <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
                 </li>
                 <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
+                    <div class="thumb grad"></div>
+                    <img src="/media/Test-Image.jpg" alt="Test Image">
                     <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
                 </li>
                 <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
+                    <div class="thumb grad"></div>
+                    <img src="/media/Test-Image.jpg" alt="Test Image">
                     <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
                 </li>
                 <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
+                    <div class="thumb grad"></div>
+                    <img src="/media/Test-Image.jpg" alt="Test Image">
                     <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
                 </li>
             </ul>
@@ -48,32 +53,7 @@
             <header>
                 <h1>Todos os Quizzes</h1>
             </header>
-            <ul>
-                <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
-                </li>
-                <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
-                </li>
-                <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
-                </li>
-                <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
-                </li>
-                <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
-                </li>
-                <li class="quiz-thumb">
-                    <img src="/media/Test-Image.png" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
-                </li>
-            </ul>
+            <ul></ul>
         </div>
     </div>
     <main class="quiz-page hidden">
@@ -115,75 +95,74 @@
 
     </main>
 
-    <section class="new-quiz-screen hidden">
-        <span class = "title">Comece pelo começo</span>
-        <div>
-            <input type="text" placeholder="Título do seu quizz">
-            <input type="text" placeholder="URL da imagem do seu quizz">
-            <input type="text" placeholder="Quantidade de perguntas do quizz">
-            <input type="text" placeholder="Quantidade de níveis do quizz">
-        </div>
-        <button class = "forward">Prosseguir pra criar perguntas</button>
-    </section>
-    
-    <section class="new-quiz-screen hidden">
-        <span class = "title">Crie suas perguntas</span>
-        <ul class="new-questions">
-            <li>
-                <div class="option-title">
-                    <span>Pergunta 1</span>
-                    <button>
-                        <img src="media/Edit-Vector.png">
-                    </button>
-                </div>
-                <div class = "option-description">
-                    <input type="text" placeholder="Texto da pergunta">
-                    <input type="text" placeholder="Cor de fundo da pergunta">
-                    <span>Resposta correta</span>
-                    <input type="text" placeholder="Resposta correta">
-                    <input type="text" placeholder="URL da imagem">
-                    <span>Respostas incorretas</span>
-                    <input type="text" placeholder="Resposta incorreta 1">
-                    <input type="text" placeholder="URL da imagem 1">
-                    <input type="text" placeholder="Resposta incorreta 2">
-                    <input type="text" placeholder="URL da imagem 2">
-                    <input type="text" placeholder="Resposta incorreta 3">
-                    <input type="text" placeholder="URL da imagem 3">
-                </div>
-            </li>
-        </ul>
-        <button class = "forward">Prosseguir para criar níveis</button>
-    </section>
-    
     <section class="new-quiz-screen">
-        <span class = "title">Agora, decida os níveis!</span>
-        <ul class="new-levels">
-            <li>
-                <div class="option-title">
-                    <span>Nível 1</span>
-                    <button>
-                        <img src="media/Edit-Vector.png">
-                    </button>
-                </div>
-                <div class = "option-description">
-                    <input type="text" placeholder="Título do nível">
-                    <input type="text" placeholder="% de acerto">
-                    <input type="text" placeholder="URL da imagem do nível">
-                    <textarea id="story" placeholder="Descrição do nível" name="story" rows="5" cols="33"></textarea>
-                </div>
-            </li>
-        </ul>
-        <button class = "forward">Finalizar Quizz</button>
-    </section>
-    
-    <section class="new-quiz-screen hidden">
-        <span>Seu quizz está pronto!</span>
-        <div>
-            <img>
-            <span>O quão Potterhead você é?</span>
+        <div class ="basic-info-screen hidden">
+            <span class = "title">Comece pelo começo</span>
+            <div class = "new-basic-info">
+                <input type="text" placeholder="Título do seu quizz">
+                <input type="text" placeholder="URL da imagem do seu quizz">
+                <input type="text" placeholder="Quantidade de perguntas do quizz">
+                <input type="text" placeholder="Quantidade de níveis do quizz">
+            </div>
+            <button class = "forward">Prosseguir pra criar perguntas</button>
         </div>
-        <button>Acessar Quizz</button>
-        <button>Voltar para home</button>
+        <div class="new-questions-screen hidden">
+            <span class = "title">Crie suas perguntas</span>
+            <ul class="new-questions">
+                <li>
+                    <div class="option-title">
+                        <span>Pergunta 1</span>
+                        <button>
+                            <img src="media/Edit-Vector.png">
+                        </button>
+                    </div>
+                    <div class = "option-description">
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input type="text" placeholder="Cor de fundo da pergunta">
+                        <span>Resposta correta</span>
+                        <input type="text" placeholder="Resposta correta">
+                        <input type="text" placeholder="URL da imagem">
+                        <span>Respostas incorretas</span>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input type="text" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input type="text" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input type="text" placeholder="URL da imagem 3">
+                    </div>
+                </li>
+            </ul>
+            <button class = "forward">Prosseguir para criar níveis</button>
+        </div>
+        <div class="new-levels-screen hidden">
+            <span class = "title">Agora, decida os níveis!</span>
+            <ul class="new-levels">
+                <li>
+                    <div class="option-title">
+                        <span>Nível 1</span>
+                        <button>
+                            <img src="media/Edit-Vector.png">
+                        </button>
+                    </div>
+                    <div class = "option-description">
+                        <input type="text" placeholder="Título do nível">
+                        <input type="text" placeholder="% de acerto">
+                        <input type="text" placeholder="URL da imagem do nível">
+                        <textarea id="story" placeholder="Descrição do nível" name="story" rows="5" cols="33"></textarea>
+                    </div>
+                </li>
+            </ul>
+            <button class = "forward">Finalizar Quizz</button>
+        </div>
+        <div class="quiz-successfully-created hidden">
+            <span class = "title">Seu quizz está pronto!</span>
+            <div class="new-quiz-layout">
+                <img src="media/Test-Image.jpg">
+                <span>O quão Potterhead você é?</span>
+            </div>
+            <button class = "forward">Acessar Quizz</button>
+            <button class="return-homescreen">Voltar para home</button>
+        </div>
     </section>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
