@@ -313,8 +313,6 @@ body {
 }
 
 .new-quiz-screen .basic-info-screen > div,
-.new-quiz-screen .new-questions-screen > div,
-.new-quiz-screen .new-levels-screen > div,
 .new-quiz-screen .quiz-successfully-created > div {
     width: 100%;
     background-color: #FFFFFF;
@@ -389,7 +387,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 18px;
+    margin-bottom: 0px;
 }
 
 .new-quiz-screen .option-title button {
@@ -400,11 +398,11 @@ body {
 }
 
 .new-quiz-screen .new-questions .option-description span {
-    margin-bottom: 18px;
+    margin-top: 18px;
 }
 
-.new-quiz-screen .new-questions .option-description input:nth-of-type(2n) {
-    margin-bottom: 32px;
+.new-quiz-screen .new-questions .option-description input:nth-of-type(2n+1) {
+    margin-top: 24px;
 }
 
 .new-quiz-screen .new-levels textarea {

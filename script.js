@@ -1,10 +1,11 @@
 const URL_QUIZZ = `https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes`;
+const newQuizzScreen = document.querySelector(".new-quiz-screen");
 const newQuizzInfo = {
     title: "",
     imageURL: "",
     numberOfQuestions: 0,
     numberOfLevels: 0
-}
+};
 
 function thumbStructure(element) {
     return `<li class="quiz-thumb" onclick="playQuizz(${element.id})">
@@ -76,8 +77,57 @@ function animateButton(thisButton) {
     },80);
 }
 
-function createNewQuestions() {
-    alert("Deu bom!");
+function printQuestions () {
+    let questions = ``;
+    let buttonClass;
+    let descriptionClass;
+    for (let i = 0 ; i < newQuizzInfo.numberOfQuestions ; i++) {
+        if (i===0) {
+            buttonClass = "hidden";
+            descriptionClass = ""
+        } else {
+            buttonClass = "";
+            descriptionClass = "hidden"
+        }
+        questions += `
+        <li>
+            <div class="option-title">
+                <span>Pergunta ${i+1}</span>
+                <button class = "${buttonClass}" onclick = "editQuestion(this)">
+                    <img src="media/Edit-Vector.png">
+                </button>
+            </div>
+            <div class = "option-description ${descriptionClass}">
+                <input type="text" placeholder="Texto da pergunta">
+                <input type="text" placeholder="Cor de fundo da pergunta">
+                <span>Resposta correta</span>
+                <input type="text" placeholder="Resposta correta">
+                <input type="text" placeholder="URL da imagem">
+                <span>Respostas incorretas</span>
+                <input type="text" placeholder="Resposta incorreta 1">
+                <input type="text" placeholder="URL da imagem 1">
+                <input type="text" placeholder="Resposta incorreta 2">
+                <input type="text" placeholder="URL da imagem 2">   
+                <input type="text" placeholder="Resposta incorreta 3">
+                <input type="text" placeholder="URL da imagem 3">
+            </div>
+        </li>`;   
+    }
+        return questions;
+}
+
+function createNewQuestionsScreen() {
+    const basicInfoScreen = newQuizzScreen.querySelector(".basic-info-screen");
+    basicInfoScreen.classList.add("hidden");
+    const newQuestionsScreen = newQuizzScreen.querySelector(".new-questions-screen");
+    newQuestionsScreen.classList.remove("hidden");
+    questions = printQuestions ()
+    newQuestionsScreen.innerHTML = `
+    <span class = "title">Crie suas perguntas</span>
+    <ul class="new-questions">
+        ${questions}
+    </ul>
+    <button class = "forward">Prosseguir para criar níveis</button>`;
 }
 
 function isTitleValid() {
@@ -94,7 +144,7 @@ function isnumberOfLevels() {
 
 function checkInputsValidation(forwardButton,isImageUrlValid) {
     if (isTitleValid() && isImageUrlValid && isnumberOfQuestions() && isnumberOfLevels()) {
-        createNewQuestions();
+        createNewQuestionsScreen();
     } else {
         alert("Houve um erro na validação dos itens listados! Por favor, tente novamente");
         buttonDisableSwitch(forwardButton);
@@ -104,7 +154,7 @@ function checkInputsValidation(forwardButton,isImageUrlValid) {
 function importInputValues(thisButton) {
     animateButton(thisButton)
     buttonDisableSwitch(thisButton);
-    const inputsArea = document.querySelector(".new-quiz-screen .new-basic-info");
+    const inputsArea = newQuizzScreen.querySelector(".new-basic-info");
     newQuizzInfo.title = inputsArea.querySelector("input:nth-child(1)").value;
     newQuizzInfo.imageURL = inputsArea.querySelector("input:nth-child(2)").value;
     newQuizzInfo.numberOfQuestions = Number(inputsArea.querySelector("input:nth-child(3)").value);
