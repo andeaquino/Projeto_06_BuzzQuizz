@@ -7,6 +7,9 @@ const newQuizzInfo = {
     levels: []
 };
 const validationResults = [];
+let questionsAnswered = 0;
+let levels = [];
+let rightAnswers = 0;
 
 function thumbStructure(element) {
     return `<li class="quiz-thumb" onclick="playQuizz(${element.id})">
@@ -40,6 +43,7 @@ function switchToQuizz(quiz) {
     banner.src = quiz.data.image;
     const questions = document.querySelector(".quiz-questions");
     questions.innerHTML = "";
+    levels = quiz.data.levels;
 
     for (let i = 0; i < quiz.data.questions.length; i++) {
         let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
@@ -47,9 +51,10 @@ function switchToQuizz(quiz) {
         
         for (let j = 0; j < randomAnswers.length; j++) {
             answers += 
-            `<li class="option">
+            `<li class="option" onclick="selectAnswer(this)">
                 <img src="${randomAnswers[j].image}" alt="Option Imagem">
                 <span>${randomAnswers[j].text}</span>
+                <span class="value hidden">${randomAnswers[j].isCorrectAnswer}</span>
             </li>`;
         }
 
@@ -73,6 +78,67 @@ function switchPage(pageFrom, pageTo) {
 function playQuizz(quizID) {
     const promise = axios.get(URL_QUIZZ + "/" + quizID);
     promise.then(switchToQuizz);
+}
+
+function selectAnswer (answer) {
+    const question = answer.parentNode;
+    const answers = question.children;
+
+    const isAnswered = question.querySelector(".not-selected");
+
+    if (isAnswered === null) {
+        for (let i = 0; i < answers.length; i++) {
+            answers[i].classList.add("not-selected");
+
+            let value = answers[i].querySelector(".value").innerText;
+            if (value === "true") {
+                answers[i].classList.add("correct")
+            } else {
+                answers[i].classList.add("wrong") 
+            }
+        }
+
+        if (answer.querySelector(".value").innerText === "true") {
+            rightAnswers++;
+        }
+        answer.classList.remove("not-selected");
+        setTimeout(scrollToNextQuestion, 2000, question.parentNode);
+        questionsAnswered++;
+        setTimeout(showResults, 2000); 
+    }
+}
+
+function scrollToNextQuestion (question) {
+    questions = document.querySelectorAll(".question");
+
+    for (let i = 0; i < questions.length; i++) {
+        if ((question === questions[i]) && (i + 1 < questions.length)) {
+            questions[i + 1].scrollIntoView();
+        }
+    }
+}
+
+function showResults () {
+    const questionsNumber = document.querySelectorAll(".question").length;
+
+    if (questionsAnswered === questionsNumber) {   
+        const score = Math.round((rightAnswers / questionsNumber) * 100);
+        let level = 0;
+        for (let i = 0; i < levels.length; i++) {
+            if (score >= levels[i].minValue) {
+                level = i;
+            }
+        }
+        const result = document.querySelector(".result");
+        result.innerHTML = `
+                <header class="score">${score}% de acerto: ${levels[level].title}</header>
+                <div class="description">
+                    <img src="${levels[level].image}" alt="Result Image">
+                    <p>${levels[level].text}</p>
+                </div>`;
+        result.classList.remove("hidden");
+        result.scrollIntoView();
+    }
 }
 
 function animateButton(thisButton) {
@@ -233,6 +299,5 @@ function importNewQuizzQuestionsValues(thisButton) {
 
     checkInputsValidation(inputs,thisButton);
 }
-
 
 getServerQuizzes();
