@@ -201,8 +201,20 @@ function selectAnswer (answer) {
                 answers[i].classList.add("wrong") 
             }
         }
-    
         answer.classList.remove("not-selected");
+        setTimeout(scrollToNextQuestion, 2000, question.parentNode);
+    }
+}
+
+function scrollToNextQuestion (question) {
+    questions = document.querySelectorAll(".question");
+    console.log(question);
+    console.log(questions[0]);
+
+    for (let i = 0; i < questions.length; i++) {
+        if ((question === questions[i]) && (i + 1 < questions.length)) {
+            questions[i + 1].scrollIntoView();
+        }
     }
 }
 
