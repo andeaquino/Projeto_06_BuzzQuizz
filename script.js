@@ -46,7 +46,7 @@ function switchToQuizz(quiz) {
         
         for (let j = 0; j < randomAnswers.length; j++) {
             answers += 
-            `<li class="option">
+            `<li class="option" onclick="selectAnswer(this)">
                 <img src="${randomAnswers[j].image}" alt="Option Imagem">
                 <span>${randomAnswers[j].text}</span>
             </li>`;
@@ -181,6 +181,17 @@ function buttonDisableSwitch(thisButton) {
         thisButton.disabled = false;
         thisButton.innerHTML = "Prosseguir pra criar perguntas"
     }
+}
+
+function selectAnswer (answer) {
+    const question = answer.parentNode;
+    const answers = question.children;
+
+    for (let i = 0; i < answers.length; i++) {
+        answers[i].classList.add("not-selected");
+    }
+
+    answer.classList.remove("not-selected");
 }
 
 getServerQuizzes();
