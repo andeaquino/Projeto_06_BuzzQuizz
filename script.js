@@ -187,11 +187,15 @@ function selectAnswer (answer) {
     const question = answer.parentNode;
     const answers = question.children;
 
-    for (let i = 0; i < answers.length; i++) {
-        answers[i].classList.add("not-selected");
-    }
+    const isAnswered = question.querySelector(".not-selected");
 
-    answer.classList.remove("not-selected");
+    if (isAnswered === null) {
+        for (let i = 0; i < answers.length; i++) {
+            answers[i].classList.add("not-selected");
+        }
+    
+        answer.classList.remove("not-selected");
+    }
 }
 
 getServerQuizzes();
