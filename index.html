@@ -71,43 +71,30 @@
         <button class="home-button" onclick="switchPage('quiz-page', 'quiz-list')">Voltar pra home</button>
     </main>
 
-    <section class="new-quiz-screen hidden">
+    <section class="new-quiz-screen">
         <div class ="basic-info-screen">
             <span class = "title">Comece pelo começo</span>
             <div class = "new-basic-info">
-                <input type="text" placeholder="Título do seu quizz" id ="quizz-title">
-                <input type="text" placeholder="URL da imagem do seu quizz" id ="image-url">
-                <input type="text" placeholder="Quantidade de perguntas do quizz" id ="number-of-questions">
-                <input type="text" placeholder="Quantidade de níveis do quizz" id ="number-of-levels">
+                <input type="text" placeholder="Título do seu quizz" name="quizz-title">
+                <input type="text" placeholder="URL da imagem do seu quizz" name="image-url">
+                <input type="text" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
+                <input type="text" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
             </div>
-            <button class = "forward" onclick="importNewQuizzInfoValues(this)">Prosseguir pra criar perguntas</button>
+            <button class = "basic-info forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>
         </div>
         <div class="new-questions-screen hidden">
             <span class = "title">Crie suas perguntas</span>
             <ul class="new-questions">
 
             </ul>
-            <button class = "forward" onclick="importNewQuizzQuestionsValues(thisButton)">Prosseguir para criar níveis</button>
+            <button class = "new-questions forward" onclick="importInputValues(this)">Prosseguir para criar níveis</button>
         </div>
         <div class="new-levels-screen hidden">
             <span class = "title">Agora, decida os níveis!</span>
             <ul class="new-levels">
-                <li>
-                    <div class="option-title">
-                        <span>Nível 1</span>
-                        <button>
-                            <img src="media/Edit-Vector.png">
-                        </button>
-                    </div>
-                    <div class = "option-description">
-                        <input type="text" placeholder="Título do nível">
-                        <input type="text" placeholder="% de acerto">
-                        <input type="text" placeholder="URL da imagem do nível">
-                        <textarea id="story" placeholder="Descrição do nível" name="story" rows="5" cols="33"></textarea>
-                    </div>
-                </li>
+
             </ul>
-            <button class = "forward">Finalizar Quizz</button>
+            <button class = "new-levels forward" onclick="importInputValues(this)">Finalizar Quizz</button>
         </div>
         <div class="quiz-successfully-created hidden">
             <span class = "title">Seu quizz está pronto!</span>
