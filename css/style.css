@@ -186,6 +186,7 @@ body {
     padding-top: 25px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
     background-color: #FFFFFF;
+    scroll-margin: 79px;
 }
 
 .quiz-page .question .question-title {
@@ -247,6 +248,7 @@ body {
     padding: 18px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
     background-color: #FFFFFF;
+    scroll-margin: 79px;
 }
 
 .quiz-page .result .score {

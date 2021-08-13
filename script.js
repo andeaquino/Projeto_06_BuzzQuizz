@@ -36,6 +36,52 @@ function randomize() {
 	return Math.random() - 0.5; 
 }
 
+function clearClass(className) {
+    const group = document.querySelectorAll(`.${className}`);
+    for (let i = 0; i < group.length; i++) {
+        group[i].classList.remove(`${className}`);
+    }
+}
+
+function clearQuizz() {
+    questionsAnswered = 0;
+    rightAnswers = 0;
+    clearClass("not-selected");
+    clearClass("correct");
+    clearClass("wrong");
+    const result = document.querySelector(".result");
+    result.classList.add("hidden");
+    window.scrollTo(0, 0);
+}
+
+function showResults(questionsNumber) { 
+    const score = Math.round((rightAnswers / questionsNumber) * 100);
+    let level = 0;
+    for (let i = 0; i < levels.length; i++) {
+        if (score >= levels[i].minValue) {
+            level = i;
+        }
+    }
+    const result = document.querySelector(".result");
+    result.innerHTML = `
+            <header class="score">${score}% de acerto: ${levels[level].title}</header>
+            <div class="description">
+                <img src="${levels[level].image}" alt="Result Image">
+                <p>${levels[level].text}</p>
+            </div>`;
+    result.classList.remove("hidden");
+    result.scrollIntoView();
+}
+
+function scrollToNextQuestion(question) {
+    questions = document.querySelectorAll(".question");
+    for (let i = 0; i < questions.length; i++) {
+        if ((question === questions[i]) && (i + 1 < questions.length)) {
+            questions[i + 1].scrollIntoView();
+        }
+    }
+}
+
 function switchToQuizz(quiz) {
     const title = document.querySelector(".quiz-title");
     title.innerText = quiz.data.title;
@@ -104,52 +150,6 @@ function selectAnswer(answer) {
         if (questionsAnswered === questionsNumber) {
             setTimeout(showResults, 2000, questionsNumber);
         }    
-    }
-}
-
-function scrollToNextQuestion(question) {
-    questions = document.querySelectorAll(".question");
-    for (let i = 0; i < questions.length; i++) {
-        if ((question === questions[i]) && (i + 1 < questions.length)) {
-            questions[i + 1].scrollIntoView();
-        }
-    }
-}
-
-function showResults(questionsNumber) { 
-        const score = Math.round((rightAnswers / questionsNumber) * 100);
-        let level = 0;
-        for (let i = 0; i < levels.length; i++) {
-            if (score >= levels[i].minValue) {
-                level = i;
-            }
-        }
-        const result = document.querySelector(".result");
-        result.innerHTML = `
-                <header class="score">${score}% de acerto: ${levels[level].title}</header>
-                <div class="description">
-                    <img src="${levels[level].image}" alt="Result Image">
-                    <p>${levels[level].text}</p>
-                </div>`;
-        result.classList.remove("hidden");
-        result.scrollIntoView();
-}
-
-function clearQuizz() {
-    questionsAnswered = 0;
-    rightAnswers = 0;
-    clearClass("not-selected");
-    clearClass("correct");
-    clearClass("wrong");
-    const result = document.querySelector(".result");
-    result.classList.add("hidden");
-    window.scrollTo(0, 0);
-}
-
-function clearClass(className) {
-    const group = document.querySelectorAll(`.${className}`);
-    for (let i = 0; i < group.length; i++) {
-        group[i].classList.remove(`${className}`);
     }
 }
 
