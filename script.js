@@ -44,13 +44,10 @@ function switchToQuizz(quiz) {
     const questions = document.querySelector(".quiz-questions");
     questions.innerHTML = "";
     levels = quiz.data.levels;
-    rightAnswers = 0;
-    questionsAnswered = 0;
-
+    clearQuizz();
     for (let i = 0; i < quiz.data.questions.length; i++) {
         let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
         let answers = "";
-        
         for (let j = 0; j < randomAnswers.length; j++) {
             answers += 
             `<li class="option" onclick="selectAnswer(this)">
@@ -59,7 +56,6 @@ function switchToQuizz(quiz) {
                 <span class="value hidden">${randomAnswers[j].isCorrectAnswer}</span>
             </li>`;
         }
-
         questions.innerHTML += 
         `<section class="question">
             <header class="question-title" style="background-color:${quiz.data.questions[i].color}">${quiz.data.questions[i].title}</header>
@@ -67,10 +63,8 @@ function switchToQuizz(quiz) {
                 ${answers}
             </ul>
         </section>`;
-
         console.log(questions.innerHTML);
-    }
-    
+    } 
     switchPage("quiz-list", "quiz-page")
 }
 
@@ -84,16 +78,13 @@ function playQuizz(quizID) {
     promise.then(switchToQuizz);
 }
 
-function selectAnswer (answer) {
+function selectAnswer(answer) {
     const question = answer.parentNode;
     const answers = question.children;
-
     const isAnswered = question.querySelector(".not-selected");
-
     if (isAnswered === null) {
         for (let i = 0; i < answers.length; i++) {
             answers[i].classList.add("not-selected");
-
             let value = answers[i].querySelector(".value").innerText;
             if (value === "true") {
                 answers[i].classList.add("correct")
@@ -101,20 +92,23 @@ function selectAnswer (answer) {
                 answers[i].classList.add("wrong") 
             }
         }
-
         if (answer.querySelector(".value").innerText === "true") {
             rightAnswers++;
         }
         answer.classList.remove("not-selected");
         setTimeout(scrollToNextQuestion, 2000, question.parentNode);
         questionsAnswered++;
-        setTimeout(showResults, 2000); 
+        const questionsNumber = document.querySelectorAll(".question").length;
+        console.log(questionsAnswered);
+        console.log(questionsNumber);
+        if (questionsAnswered === questionsNumber) {
+            setTimeout(showResults, 2000, questionsNumber);
+        }    
     }
 }
 
-function scrollToNextQuestion (question) {
+function scrollToNextQuestion(question) {
     questions = document.querySelectorAll(".question");
-
     for (let i = 0; i < questions.length; i++) {
         if ((question === questions[i]) && (i + 1 < questions.length)) {
             questions[i + 1].scrollIntoView();
@@ -122,10 +116,7 @@ function scrollToNextQuestion (question) {
     }
 }
 
-function showResults () {
-    const questionsNumber = document.querySelectorAll(".question").length;
-
-    if (questionsAnswered === questionsNumber) {   
+function showResults(questionsNumber) { 
         const score = Math.round((rightAnswers / questionsNumber) * 100);
         let level = 0;
         for (let i = 0; i < levels.length; i++) {
@@ -142,23 +133,20 @@ function showResults () {
                 </div>`;
         result.classList.remove("hidden");
         result.scrollIntoView();
-    }
 }
 
-function restartQuizz () {
+function clearQuizz() {
     questionsAnswered = 0;
     rightAnswers = 0;
-
     clearClass("not-selected");
     clearClass("correct");
     clearClass("wrong");
-
     const result = document.querySelector(".result");
     result.classList.add("hidden");
     window.scrollTo(0, 0);
 }
 
-function clearClass (className) {
+function clearClass(className) {
     const group = document.querySelectorAll(`.${className}`);
     for (let i = 0; i < group.length; i++) {
         group[i].classList.remove(`${className}`);

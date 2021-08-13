@@ -16,7 +16,7 @@
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
 
-    <div class="quiz-list hidden">
+    <div class="quiz-list">
         <div class="empty-quiz-list hidden">
             <span>Você não criou nenhum quizz ainda :(</span>
             <div class="create-quiz-button" onclick="switchPage('quiz-list', 'new-quiz-screen')">Criar Quizz</div>
@@ -56,74 +56,19 @@
             <ul></ul>
         </div>
     </div>
+    
     <main class="quiz-page hidden">
         <header class="quiz-banner">
-            <img class="banner-image" src="https://img.quizur.com/f/img60229135637eb5.97078183.jpg?lastEdited=1612878137">
+            <img class="banner-image" src="">
             <div class="shadow"></div>
-            <span class="quiz-title">O quanto você conhece de Friends?</span>
+            <span class="quiz-title"></span>
         </header>
         <div class="quiz-questions">
-            <section class="question">
-                <header class="question-title">Em que episódio ocorre o casamento de Monica e Chandler?</header>
-                <ul class="answers">
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://s3cf.recapguide.com:444/img/tv/24/7x24/Friends-Season-7-Episode-24-2-e9d3.jpg" alt="Option Imagem">
-                        <span>S07E24</span>
-                        <span class="value hidden">true</span>
-                    </li>
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://s3cf.recapguide.com:444/img/tv/24/7x23/Friends-Season-7-Episode-23-7-5489.jpg" alt="Option Imagem">
-                        <span>S07E23</span>
-                        <span class="value hidden">false</span>
-                    </li>
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://medias.spotern.com/spots/w640/78/78954-1532336916.jpg" alt="Option Imagem">
-                        <span>S07E01</span>
-                        <span class="value hidden">false</span>
-                    </li>
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://s3cf.recapguide.com:444/img/tv/24/7x2/Friends-Season-7-Episode-2-12-84df.jpg" alt="Option Imagem">
-                        <span>S07E02</span>
-                        <span class="value hidden">false</span>
-                    </li>
-                </ul>
-            </section>
-            <section class="question">
-                <header class="question-title">Em que episódio ocorre o casamento de Monica e Chandler?</header>
-                <ul class="answers">
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://s3cf.recapguide.com:444/img/tv/24/7x24/Friends-Season-7-Episode-24-2-e9d3.jpg" alt="Option Imagem">
-                        <span>S07E24</span>
-                        <span class="value hidden">true</span>
-                    </li>
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://s3cf.recapguide.com:444/img/tv/24/7x23/Friends-Season-7-Episode-23-7-5489.jpg" alt="Option Imagem">
-                        <span>S07E23</span>
-                        <span class="value hidden">false</span>
-                    </li>
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://medias.spotern.com/spots/w640/78/78954-1532336916.jpg" alt="Option Imagem">
-                        <span>S07E01</span>
-                        <span class="value hidden">false</span>
-                    </li>
-                    <li class="option" onclick="selectAnswer(this)">
-                        <img src="https://s3cf.recapguide.com:444/img/tv/24/7x2/Friends-Season-7-Episode-2-12-84df.jpg" alt="Option Imagem">
-                        <span>S07E02</span>
-                        <span class="value hidden">false</span>
-                    </li>
-                </ul>
-            </section>
         </div>
         <section class="result hidden">
-            <header class="score">88% de acerto: Bastante</header>
-            <div class="description">
-                <img src="https://www.tvinsider.com/wp-content/uploads/2020/06/friends-joey-chandler-rachel-monica.jpg" alt="Result Image">
-                <p>Quando o apocalipse chegar, você está mais que preparado para trazer de volta nossa alegria! Continue decorando mais séries pelo bem da humanidade.</p>
-            </div>
         </section>
-        <button class="restart-button" onclick="restartQuizz()">Reiniciar Quizz</button>
-        <button class="home-button">Voltar pra home</button>
-
+        <button class="restart-button" onclick="clearQuizz()">Reiniciar Quizz</button>
+        <button class="home-button" onclick="switchPage('quiz-page', 'quiz-list')">Voltar pra home</button>
     </main>
 
     <section class="new-quiz-screen hidden">

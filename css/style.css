@@ -218,7 +218,7 @@ body {
 
 .quiz-page .question .answers .option img {
     width: 100%;
-    height: 100%;
+    height: 196px;
     object-fit: cover;
 }
 
@@ -544,6 +544,10 @@ input[type="color"] {
 
     .quiz-page .question .answers .option span {
         font-size: 13px;
+    }
+
+    .quiz-page .question .answers .option img {
+        height: 113px;
     }
 
     .quiz-page .result {
