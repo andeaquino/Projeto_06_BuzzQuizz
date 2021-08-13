@@ -2,10 +2,11 @@ const URL_QUIZZ = `https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/
 const newQuizzScreen = document.querySelector(".new-quiz-screen");
 const newQuizzInfo = {
     title: "",
-    imageURL: "",
-    numberOfQuestions: 0,
-    numberOfLevels: 0
+    image: "",
+    questions: [],
+    levels: []
 };
+const validationResults = [];
 
 function thumbStructure(element) {
     return `<li class="quiz-thumb" onclick="playQuizz(${element.id})">
@@ -81,29 +82,47 @@ function animateButton(thisButton) {
     },80);
 }
 
+function buttonDisableSwitch(thisButton) {
+    if (thisButton.disabled === false){
+        thisButton.disabled = true;
+        thisButton.innerHTML = `<img src="media/Button Loading.gif">`
+    } else {
+        thisButton.disabled = false;
+        thisButton.innerHTML = "Prosseguir pra criar perguntas"
+    }
+}
+
+function editOption (thisButton) {
+    const thisOption = thisButton.parentNode.parentNode;
+    const thisUl = thisOption.parentNode;
+    const selectedOption = thisUl.querySelector(".selected");
+    selectedOption.classList.remove("selected");
+    thisOption.classList.add("selected")
+}
+
 function printQuestions () {
     let questions = ``;
-    let buttonClass;
-    let descriptionClass;
-    for (let i = 0 ; i < newQuizzInfo.numberOfQuestions ; i++) {
+    let questionClass;
+    for (let i = 0 ; i < newQuizzInfo.questions.length ; i++) {
         if (i===0) {
-            buttonClass = "hidden";
-            descriptionClass = ""
+            questionClass = "selected";
         } else {
-            buttonClass = "";
-            descriptionClass = "hidden"
+            questionClass = "";
         }
         questions += `
-        <li>
+        <li class = "${questionClass}">
             <div class="option-title">
                 <span>Pergunta ${i+1}</span>
-                <button class = "${buttonClass}" onclick = "editQuestion(this)">
+                <button onclick = "editOption(this)">
                     <img src="media/Edit-Vector.png">
                 </button>
             </div>
-            <div class = "option-description ${descriptionClass}">
-                <input type="text" placeholder="Texto da pergunta">
-                <input type="text" placeholder="Cor de fundo da pergunta">
+            <div class = "option-description">
+                <div>
+                    <input type="text" placeholder="Texto da pergunta">
+                    <input type="color" placeholder="Cor de fundo da pergunta" value="#FFFFFF">
+                    <span onclick='return false'>Cor de fundo da pergunta</span>
+                </div>
                 <span>Resposta correta</span>
                 <input type="text" placeholder="Resposta correta">
                 <input type="text" placeholder="URL da imagem">
@@ -117,7 +136,9 @@ function printQuestions () {
             </div>
         </li>`;   
     }
-        return questions;
+
+    //<input type="color" placeholder="Cor de fundo da pergunta" value="#FFFFFF">
+    return questions;
 }
 
 function createNewQuestionsScreen() {
@@ -125,62 +146,93 @@ function createNewQuestionsScreen() {
     basicInfoScreen.classList.add("hidden");
     const newQuestionsScreen = newQuizzScreen.querySelector(".new-questions-screen");
     newQuestionsScreen.classList.remove("hidden");
+    const newQuestionsArea = newQuizzScreen.querySelector(".new-questions-screen .new-questions");
     questions = printQuestions ()
-    newQuestionsScreen.innerHTML = `
-    <span class = "title">Crie suas perguntas</span>
-    <ul class="new-questions">
-        ${questions}
-    </ul>
-    <button class = "forward">Prosseguir para criar níveis</button>`;
+    newQuestionsArea.innerHTML = questions
 }
 
-function isTitleValid() {
-    return (newQuizzInfo.title.length >= 20 && newQuizzInfo.title.length <= 65);
-}
-
-function isnumberOfQuestions() {
-    return (!isNaN(newQuizzInfo.numberOfQuestions) && newQuizzInfo.numberOfQuestions >= 3);
-}
-
-function isnumberOfLevels() {
-    return (!isNaN(newQuizzInfo.numberOfLevels) && newQuizzInfo.numberOfLevels >= 2);
-}
-
-function checkInputsValidation(forwardButton,isImageUrlValid) {
-    if (isTitleValid() && isImageUrlValid && isnumberOfQuestions() && isnumberOfLevels()) {
-        createNewQuestionsScreen();
-    } else {
-        alert("Houve um erro na validação dos itens listados! Por favor, tente novamente");
-        buttonDisableSwitch(forwardButton);
-    }
-}
-
-function importInputValues(thisButton) {
-    animateButton(thisButton)
-    buttonDisableSwitch(thisButton);
-    const inputsArea = newQuizzScreen.querySelector(".new-basic-info");
-    newQuizzInfo.title = inputsArea.querySelector("input:nth-child(1)").value;
-    newQuizzInfo.imageURL = inputsArea.querySelector("input:nth-child(2)").value;
-    newQuizzInfo.numberOfQuestions = Number(inputsArea.querySelector("input:nth-child(3)").value);
-    newQuizzInfo.numberOfLevels = Number(inputsArea.querySelector("input:nth-child(4)").value);
+function validateImageURL(inputs,arrayIndex,screenForwardButton) {
     const UrlCheck = new Image();
-    UrlCheck.src = newQuizzInfo.imageURL;
+    const imageUrl = inputs[arrayIndex].value
+    UrlCheck.src = imageUrl;
     UrlCheck.addEventListener('load',  function() {
-        checkInputsValidation(thisButton,true);
+        validationResults[arrayIndex] = true;
+        if (areAllInputsImported(inputs)) {
+            validateAllInputs(screenForwardButton);
+        }
     });
     UrlCheck.addEventListener('error', function() {
-        checkInputsValidation(thisButton,false);
+        validationResults[arrayIndex] = false;
+        if (areAllInputsImported(inputs)) {
+            validateAllInputs(screenForwardButton);
+        }
     });
 }
 
-function buttonDisableSwitch(thisButton) {
-    if (thisButton.disabled === false){
-        thisButton.disabled = true;
-        thisButton.innerHTML = `<img src="media/Button Loading.gif">`
+function validateSingleInput(input) {
+    const inputValue = input.value;
+    const validation = [
+        {id: "quizz-title", condition: (inputValue.length >= 20 && inputValue.length <= 65)},
+        {id: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 3)},
+        {id: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 2)},
+
+    ]
+
+    const condition = validation.find( ({ id }) => id === input.id ).condition;
+    return condition;
+}
+
+function validateAllInputs(screenForwardButton) {
+    if (validationResults.includes(false)){
+        buttonDisableSwitch(screenForwardButton);
+        alert("Houve um erro na validação das entradas! Por favor tente novamente")
     } else {
-        thisButton.disabled = false;
-        thisButton.innerHTML = "Prosseguir pra criar perguntas"
+        createNewQuestionsScreen()
     }
 }
+
+function areAllInputsImported(inputs) {
+    return (!validationResults.includes(undefined) && validationResults.length === inputs.length)
+}
+
+function checkInputsValidation(inputs,screenForwardButton) {
+    validationResults.length = 0;
+    for (let i = 0 ; i < inputs.length ; i++) {
+        if (inputs[i].id === "image-url") {
+            validateImageURL(inputs,i,screenForwardButton);
+        } else {
+            validationResults[i] = validateSingleInput(inputs[i]);
+        }
+    }
+    if (areAllInputsImported(inputs)) {
+        validateAllInputs(screenForwardButton);
+    } 
+}
+
+function importNewQuizzInfoValues(thisButton) {
+    animateButton(thisButton)
+    buttonDisableSwitch(thisButton);
+    const inputsArea = thisButton.parentNode;
+    const inputs = inputsArea.querySelectorAll("input");
+    newQuizzInfo.title = inputs[0].value;
+    newQuizzInfo.image = inputs[1].value;
+    for (let i = 0 ; i < Number(inputs[2].value) ; i++) {
+        newQuizzInfo.questions.push({title:"", color:"", answers:[] })
+    }
+    for (let i = 0 ; i < Number(inputs[3].value) ; i++) {
+        newQuizzInfo.levels.push({title:"", image:"", text:"", minValue:0 })
+    }
+    checkInputsValidation(inputs,thisButton);
+}
+
+function importNewQuizzQuestionsValues(thisButton) {
+    animateButton(thisButton)
+    buttonDisableSwitch(thisButton);
+    const inputsArea = thisButton.parentNode;
+    const inputs = inputsArea.querySelectorAll("input");
+
+    checkInputsValidation(inputs,thisButton);
+}
+
 
 getServerQuizzes();
