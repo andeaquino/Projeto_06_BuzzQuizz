@@ -44,10 +44,12 @@ function switchToQuizz(quiz) {
     const questions = document.querySelector(".quiz-questions");
     questions.innerHTML = "";
     levels = quiz.data.levels;
+    rightAnswers = 0;
+    questionsAnswered = 0;
 
     for (let i = 0; i < quiz.data.questions.length; i++) {
         let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
-        answers = ""
+        let answers = "";
         
         for (let j = 0; j < randomAnswers.length; j++) {
             answers += 
@@ -58,13 +60,15 @@ function switchToQuizz(quiz) {
             </li>`;
         }
 
-        questions.innerHTNL = 
+        questions.innerHTML += 
         `<section class="question">
             <header class="question-title" style="background-color:${quiz.data.questions[i].color}">${quiz.data.questions[i].title}</header>
             <ul class="answers">
                 ${answers}
             </ul>
         </section>`;
+
+        console.log(questions.innerHTML);
     }
     
     switchPage("quiz-list", "quiz-page")
@@ -138,6 +142,26 @@ function showResults () {
                 </div>`;
         result.classList.remove("hidden");
         result.scrollIntoView();
+    }
+}
+
+function restartQuizz () {
+    questionsAnswered = 0;
+    rightAnswers = 0;
+
+    clearClass("not-selected");
+    clearClass("correct");
+    clearClass("wrong");
+
+    const result = document.querySelector(".result");
+    result.classList.add("hidden");
+    window.scrollTo(0, 0);
+}
+
+function clearClass (className) {
+    const group = document.querySelectorAll(`.${className}`);
+    for (let i = 0; i < group.length; i++) {
+        group[i].classList.remove(`${className}`);
     }
 }
 
