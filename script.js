@@ -47,7 +47,7 @@ function switchToQuizz(quiz) {
 
     for (let i = 0; i < quiz.data.questions.length; i++) {
         let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
-        answers = ""
+        let answers = "";
         
         for (let j = 0; j < randomAnswers.length; j++) {
             answers += 
@@ -58,13 +58,15 @@ function switchToQuizz(quiz) {
             </li>`;
         }
 
-        questions.innerHTNL = 
+        questions.innerHTML += 
         `<section class="question">
             <header class="question-title" style="background-color:${quiz.data.questions[i].color}">${quiz.data.questions[i].title}</header>
             <ul class="answers">
                 ${answers}
             </ul>
         </section>`;
+
+        console.log(questions.innerHTML);
     }
     
     switchPage("quiz-list", "quiz-page")
