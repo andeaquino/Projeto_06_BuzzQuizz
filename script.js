@@ -178,7 +178,13 @@ function buttonDisableSwitch(thisButton) {
         thisButton.innerHTML = `<img src="media/Button Loading.gif">`
     } else {
         thisButton.disabled = false;
-        thisButton.innerHTML = "Prosseguir pra criar perguntas"
+        if (thisButton.classList.contains("basic-info")) {
+            thisButton.innerHTML = "Prosseguir pra criar perguntas"
+        } else if (thisButton.classList.contains("new-questions")) {
+            thisButton.innerHTML = "Prosseguir para criar níveis"
+        } else if (thisButton.classList.contains("new-levels")) {
+            thisButton.innerHTML = "Finalizar Quizz"
+        }
     }
 }
 
@@ -229,6 +235,34 @@ function printQuestions () {
     return questions;
 }
 
+function printLevels () {
+    let levels = ``;
+    let levelsClass;
+    for (let i = 0 ; i < newQuizzInfo.levels.length ; i++) {
+        if (i===0) {
+            levelsClass = "selected";
+        } else {
+            levelsClass = "";
+        }
+        levels += `
+            <li class = "${levelsClass}">
+            <div class="option-title">
+                <span>Nível ${i+1}</span>
+                <button onclick = "editOption(this)">
+                    <img src="media/Edit-Vector.png">
+                </button>
+            </div>
+            <div class = "option-description">
+                <input type="text" placeholder="Título do nível" name="level-title">
+                <input type="text" placeholder="% de acerto" name="minimum-percentage">
+                <input type="text" placeholder="URL da imagem do nível" name="level-title">
+                <textarea id="story" placeholder="Descrição do nível" name="level-description" rows="5" cols="33"></textarea>
+            </div>
+        </li>`;   
+    }
+    return levels;
+}
+
 function createNewQuestionsScreen() {
     const basicInfoScreen = newQuizzScreen.querySelector(".basic-info-screen");
     basicInfoScreen.classList.add("hidden");
@@ -237,6 +271,16 @@ function createNewQuestionsScreen() {
     const newQuestionsArea = newQuizzScreen.querySelector(".new-questions-screen .new-questions");
     questions = printQuestions ()
     newQuestionsArea.innerHTML = questions
+}
+
+function createNewLevelsScreen() {
+    const newQuestionsScreen = newQuizzScreen.querySelector(".new-questions-screen");
+    newQuestionsScreen.classList.add("hidden");
+    const newLevelsScreen = newQuizzScreen.querySelector(".new-levels-screen");
+    newLevelsScreen.classList.remove("hidden");
+    const newLevelsArea = newQuizzScreen.querySelector(".new-levels-screen .new-levels");
+    levels = printLevels ()
+    newLevelsArea.innerHTML = levels
 }
 
 function validateImageURL(inputs,i,screenForwardButton) {
@@ -261,11 +305,14 @@ function validateSingleInput(inputs,i) {
     const inputValue = inputs[i].value;
     const validation = [
         {name: "quizz-title", condition: (inputValue.length >= 20 && inputValue.length <= 65)},
-        {name: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 3)},
+        {name: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 1)},
         {name: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 2)},
         {name: "question-title", condition: (inputValue.length >= 20)},
         {name: "question-background-color", condition: true },
         {name: "question-answer", condition: (inputValue.value !== "")},
+        {name: "level-title", condition: (inputValue.length >= 10)},
+        {name: "minimum-percentage", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 0 && Number(inputValue) <= 100)},
+        {name: "level-description", condition: (inputValue.length >= 30)},
     ]
     const condition = validation.find( ({ name }) => name === inputs[i].name ).condition;
     return condition;
@@ -277,8 +324,11 @@ function moveToNextScreen(screenForwardButton) {
         createNewQuestionsScreen();
     }
     if (screenForwardButton.classList.contains("new-questions")) {
-        alert("Opa!");
-        saveImportedNewQuestionsValues(screenForwardButton)
+        saveImportedNewQuestionsValues(screenForwardButton);
+        createNewLevelsScreen();
+    }
+    if (screenForwardButton.classList.contains("new-levels")) {
+        alert("OPA!")
         buttonDisableSwitch(screenForwardButton);
     }
 }
@@ -304,6 +354,15 @@ function isValidEmptyAnswer (inputs,i) {
 
 function checkInputsValidation(inputs,screenForwardButton) {
     validationResults.length = 0;
+    const levelsMinimumPercentagesInputs = inputs.filter(( ({ name }) => name === "minimum-percentage" ));
+    const levelsMinimumPercentagesValues = levelsMinimumPercentagesInputs.map((elemento) => Number(elemento.value));
+    if (levelsMinimumPercentagesValues.length !== 0 ) {
+        if (!levelsMinimumPercentagesValues.includes(0)) {
+            buttonDisableSwitch(screenForwardButton);
+            alert("Houve um erro na validação das entradas! Por favor tente novamente")
+            return
+        }
+    }
     for (let i = 0 ; i < inputs.length ; i++) {
         if (inputs[i].value === "") {
             validationResults[i] = isValidEmptyAnswer(inputs,i)
@@ -333,7 +392,6 @@ function saveImportedBasicInfoValues(screenForwardButton) {
 
 function saveImportedNewQuestionsValues(screenForwardButton) {
     const inputsArea = screenForwardButton.parentNode;
-    let inputs = Array.from(inputsArea.querySelectorAll("input"));
     for (let i = 0 ; i < newQuizzInfo.questions.length ; i++) {
         const thisQuestion = inputsArea.querySelector(`li:nth-of-type(${i+1})`) ;
         const questionInputs = Array.from(thisQuestion.querySelectorAll("input"));
@@ -365,7 +423,7 @@ function importInputValues(thisButton) {
     animateButton(thisButton);
     buttonDisableSwitch(thisButton);
     const inputsArea = thisButton.parentNode;
-    let inputs = Array.from(inputsArea.querySelectorAll("input"));
+    let inputs = Array.from(inputsArea.querySelectorAll("input, textarea"));
     checkInputsValidation(inputs,thisButton);
 }
 

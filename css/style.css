@@ -428,7 +428,8 @@ body {
 }
 
 .new-quiz-screen .new-questions .option-description div input:first-child,
-.new-quiz-screen .new-questions .option-description > input:nth-of-type(2n+1) {
+.new-quiz-screen .new-questions .option-description > input:nth-of-type(2n+1),
+.new-quiz-screen .new-levels .option-description > input:first-child {
     margin-top: 24px;
 }
 
