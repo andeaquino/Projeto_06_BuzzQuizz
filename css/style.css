@@ -396,13 +396,43 @@ body {
     background-color: inherit;
     border: none;
 }
-
-.new-quiz-screen .new-questions .option-description span {
-    margin-top: 18px;
+.new-quiz-screen li.selected .option-title button,
+.new-quiz-screen li .option-description {
+    display: none;
 }
 
-.new-quiz-screen .new-questions .option-description input:nth-of-type(2n+1) {
+.new-quiz-screen li.selected .option-description {
+    display: block;
+}
+
+.new-quiz-screen li.selected .option-description span {
+    margin-top: 10px;
+}
+
+.new-quiz-screen .new-questions .option-description div {
+    position: relative;
+}
+
+.new-quiz-screen .new-questions .option-description div span {
+    position: absolute;
+    left: 24px;
+    bottom: 22px;
+    z-index: 1;
+    font-size: 19px;
+    font-weight: 400;
+    margin-top: 18px;
+    font-style: italic;
+    color: #bababa;
+    pointer-events: none;
+}
+
+.new-quiz-screen .new-questions .option-description div input:first-child,
+.new-quiz-screen .new-questions .option-description > input:nth-of-type(2n+1) {
     margin-top: 24px;
+}
+
+input[type="color"] {
+    padding-left: 0px;
 }
 
 .new-quiz-screen .new-levels textarea {

@@ -16,8 +16,8 @@
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
 
-    <div class="quiz-list">
-        <div class="empty-quiz-list">
+    <div class="quiz-list hidden">
+        <div class="empty-quiz-list hidden">
             <span>Você não criou nenhum quizz ainda :(</span>
             <div class="create-quiz-button" onclick="switchPage('quiz-list', 'new-quiz-screen')">Criar Quizz</div>
         </div>
@@ -130,19 +130,19 @@
         <div class ="basic-info-screen">
             <span class = "title">Comece pelo começo</span>
             <div class = "new-basic-info">
-                <input type="text" placeholder="Título do seu quizz">
-                <input type="text" placeholder="URL da imagem do seu quizz">
-                <input type="text" placeholder="Quantidade de perguntas do quizz">
-                <input type="text" placeholder="Quantidade de níveis do quizz">
+                <input type="text" placeholder="Título do seu quizz" id ="quizz-title">
+                <input type="text" placeholder="URL da imagem do seu quizz" id ="image-url">
+                <input type="text" placeholder="Quantidade de perguntas do quizz" id ="number-of-questions">
+                <input type="text" placeholder="Quantidade de níveis do quizz" id ="number-of-levels">
             </div>
-            <button class = "forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>
+            <button class = "forward" onclick="importNewQuizzInfoValues(this)">Prosseguir pra criar perguntas</button>
         </div>
         <div class="new-questions-screen hidden">
             <span class = "title">Crie suas perguntas</span>
             <ul class="new-questions">
 
             </ul>
-            <button class = "forward">Prosseguir para criar níveis</button>
+            <button class = "forward" onclick="importNewQuizzQuestionsValues(thisButton)">Prosseguir para criar níveis</button>
         </div>
         <div class="new-levels-screen hidden">
             <span class = "title">Agora, decida os níveis!</span>
