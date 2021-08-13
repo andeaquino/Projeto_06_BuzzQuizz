@@ -250,4 +250,24 @@ function showResults () {
     }
 }
 
+function restartQuizz () {
+    questionsAnswered = 0;
+    rightAnswers = 0;
+
+    clearClass("not-selected");
+    clearClass("correct");
+    clearClass("wrong");
+
+    const result = document.querySelector(".result");
+    result.classList.add("hidden");
+    window.scrollTo(0, 0);
+}
+
+function clearClass (className) {
+    const group = document.querySelectorAll(`.${className}`);
+    for (let i = 0; i < group.length; i++) {
+        group[i].classList.remove(`${className}`);
+    }
+}
+
 getServerQuizzes();
