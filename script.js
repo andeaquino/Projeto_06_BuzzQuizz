@@ -185,25 +185,23 @@ function printQuestions () {
             </div>
             <div class = "option-description">
                 <div>
-                    <input type="text" placeholder="Texto da pergunta">
-                    <input type="color" placeholder="Cor de fundo da pergunta" value="#FFFFFF">
-                    <span onclick='return false'>Cor de fundo da pergunta</span>
+                    <input type="text" placeholder="Texto da pergunta" name="question-title">
+                    <input type="color" placeholder="Cor de fundo da pergunta" value="#FFFFFF" name="question-background-color">
+                    <span>Cor de fundo da pergunta</span>
                 </div>
                 <span>Resposta correta</span>
-                <input type="text" placeholder="Resposta correta">
-                <input type="text" placeholder="URL da imagem">
+                <input type="text" placeholder="Resposta correta" name="question-answer">
+                <input type="text" placeholder="URL da imagem" name="image-url">
                 <span>Respostas incorretas</span>
-                <input type="text" placeholder="Resposta incorreta 1">
-                <input type="text" placeholder="URL da imagem 1">
-                <input type="text" placeholder="Resposta incorreta 2">
-                <input type="text" placeholder="URL da imagem 2">   
-                <input type="text" placeholder="Resposta incorreta 3">
-                <input type="text" placeholder="URL da imagem 3">
+                <input type="text" placeholder="Resposta incorreta 1" name="question-answer">
+                <input type="text" placeholder="URL da imagem 1" name="image-url">
+                <input type="text" placeholder="Resposta incorreta 2" name="question-answer">
+                <input type="text" placeholder="URL da imagem 2" name="image-url">   
+                <input type="text" placeholder="Resposta incorreta 3" name="question-answer">
+                <input type="text" placeholder="URL da imagem 3" name="image-url">
             </div>
         </li>`;   
     }
-
-    //<input type="color" placeholder="Cor de fundo da pergunta" value="#FFFFFF">
     return questions;
 }
 
@@ -217,35 +215,48 @@ function createNewQuestionsScreen() {
     newQuestionsArea.innerHTML = questions
 }
 
-function validateImageURL(inputs,arrayIndex,screenForwardButton) {
+function validateImageURL(inputs,i,screenForwardButton) {
     const UrlCheck = new Image();
-    const imageUrl = inputs[arrayIndex].value
+    const imageUrl = inputs[i].value
     UrlCheck.src = imageUrl;
     UrlCheck.addEventListener('load',  function() {
-        validationResults[arrayIndex] = true;
+        validationResults[i] = true;
         if (areAllInputsImported(inputs)) {
             validateAllInputs(screenForwardButton);
         }
     });
     UrlCheck.addEventListener('error', function() {
-        validationResults[arrayIndex] = false;
+        validationResults[i] = false;
         if (areAllInputsImported(inputs)) {
             validateAllInputs(screenForwardButton);
         }
     });
 }
 
-function validateSingleInput(input) {
-    const inputValue = input.value;
+function validateSingleInput(inputs,i) {
+    const inputValue = inputs[i].value;
     const validation = [
-        {id: "quizz-title", condition: (inputValue.length >= 20 && inputValue.length <= 65)},
-        {id: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 3)},
-        {id: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 2)},
-
+        {name: "quizz-title", condition: (inputValue.length >= 20 && inputValue.length <= 65)},
+        {name: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 3)},
+        {name: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 2)},
+        {name: "question-title", condition: (inputValue.length >= 20)},
+        {name: "question-background-color", condition: true },
+        {name: "question-answer", condition: (inputValue.value !== "")},
     ]
-
-    const condition = validation.find( ({ id }) => id === input.id ).condition;
+    const condition = validation.find( ({ name }) => name === inputs[i].name ).condition;
     return condition;
+}
+
+function moveToNextScreen(screenForwardButton) {
+    if (screenForwardButton.classList.contains("basic-info")) {
+        saveImportedBasicInfoValues(screenForwardButton);
+        createNewQuestionsScreen();
+    }
+    if (screenForwardButton.classList.contains("new-questions")) {
+        alert("Opa!");
+        saveImportedNewQuestionsValues(screenForwardButton)
+        buttonDisableSwitch(screenForwardButton);
+    }
 }
 
 function validateAllInputs(screenForwardButton) {
@@ -253,7 +264,7 @@ function validateAllInputs(screenForwardButton) {
         buttonDisableSwitch(screenForwardButton);
         alert("Houve um erro na validação das entradas! Por favor tente novamente")
     } else {
-        createNewQuestionsScreen()
+        moveToNextScreen(screenForwardButton);
     }
 }
 
@@ -261,13 +272,21 @@ function areAllInputsImported(inputs) {
     return (!validationResults.includes(undefined) && validationResults.length === inputs.length)
 }
 
+function isValidEmptyAnswer (inputs,i) {
+    const isEmptyText = ((i % 10 >=6) && inputs[i].value === "" && (i !== inputs.length-1) && inputs[i+1].name === "image-url" && inputs[i+1].value === ""); 
+    const isEmptyUrl = ((i % 10 >=6) && inputs[i].value === "" && (i !== 0) && inputs[i-1].name === "question-answer" && inputs[i-1].value === ""); ;
+    return (isEmptyText || isEmptyUrl)
+}
+
 function checkInputsValidation(inputs,screenForwardButton) {
     validationResults.length = 0;
     for (let i = 0 ; i < inputs.length ; i++) {
-        if (inputs[i].id === "image-url") {
+        if (inputs[i].value === "") {
+            validationResults[i] = isValidEmptyAnswer(inputs,i)
+        } else if (inputs[i].name === "image-url") {
             validateImageURL(inputs,i,screenForwardButton);
         } else {
-            validationResults[i] = validateSingleInput(inputs[i]);
+            validationResults[i] = validateSingleInput(inputs,i);
         }
     }
     if (areAllInputsImported(inputs)) {
@@ -275,28 +294,54 @@ function checkInputsValidation(inputs,screenForwardButton) {
     } 
 }
 
-function importNewQuizzInfoValues(thisButton) {
-    animateButton(thisButton)
-    buttonDisableSwitch(thisButton);
-    const inputsArea = thisButton.parentNode;
-    const inputs = inputsArea.querySelectorAll("input");
+function saveImportedBasicInfoValues(screenForwardButton) {
+    const inputsArea = screenForwardButton.parentNode;
+    let inputs = Array.from(inputsArea.querySelectorAll("input"));
     newQuizzInfo.title = inputs[0].value;
     newQuizzInfo.image = inputs[1].value;
     for (let i = 0 ; i < Number(inputs[2].value) ; i++) {
-        newQuizzInfo.questions.push({title:"", color:"", answers:[] })
+        newQuizzInfo.questions.push({title:"", color:"", answers:[] });
     }
     for (let i = 0 ; i < Number(inputs[3].value) ; i++) {
-        newQuizzInfo.levels.push({title:"", image:"", text:"", minValue:0 })
+        newQuizzInfo.levels.push({title:"", image:"", text:"", minValue:0 });
     }
-    checkInputsValidation(inputs,thisButton);
 }
 
-function importNewQuizzQuestionsValues(thisButton) {
-    animateButton(thisButton)
+function saveImportedNewQuestionsValues(screenForwardButton) {
+    const inputsArea = screenForwardButton.parentNode;
+    let inputs = Array.from(inputsArea.querySelectorAll("input"));
+    for (let i = 0 ; i < newQuizzInfo.questions.length ; i++) {
+        const thisQuestion = inputsArea.querySelector(`li:nth-of-type(${i+1})`) ;
+        const questionInputs = Array.from(thisQuestion.querySelectorAll("input"));
+        questionObject = {
+            title: questionInputs[0].value,
+            image:questionInputs[1].value,
+            answers:[]
+        };
+        for (let j = 0 ; j < 4 ; j++) {
+            const text = questionInputs[(j*2)+2].value;
+            const image = questionInputs[(j*2)+3].value;
+            if (j < 2 || text !== "" || image !== "") {
+                answerObject = {
+                    text,
+                    image,
+                    isCorrectAnswer: false
+                }
+                if (j === 0) {
+                    answerObject.isCorrectAnswer = true;
+                }
+                questionObject.answers.push(answerObject);
+            }
+        }
+        newQuizzInfo.questions[i] = questionObject;
+    }
+}
+
+function importInputValues(thisButton) {
+    animateButton(thisButton);
     buttonDisableSwitch(thisButton);
     const inputsArea = thisButton.parentNode;
-    const inputs = inputsArea.querySelectorAll("input");
-
+    let inputs = Array.from(inputsArea.querySelectorAll("input"));
     checkInputsValidation(inputs,thisButton);
 }
 

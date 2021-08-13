@@ -126,23 +126,23 @@
 
     </main>
 
-    <section class="new-quiz-screen hidden">
+    <section class="new-quiz-screen">
         <div class ="basic-info-screen">
             <span class = "title">Comece pelo começo</span>
             <div class = "new-basic-info">
-                <input type="text" placeholder="Título do seu quizz" id ="quizz-title">
-                <input type="text" placeholder="URL da imagem do seu quizz" id ="image-url">
-                <input type="text" placeholder="Quantidade de perguntas do quizz" id ="number-of-questions">
-                <input type="text" placeholder="Quantidade de níveis do quizz" id ="number-of-levels">
+                <input type="text" placeholder="Título do seu quizz" name="quizz-title">
+                <input type="text" placeholder="URL da imagem do seu quizz" name="image-url">
+                <input type="text" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
+                <input type="text" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
             </div>
-            <button class = "forward" onclick="importNewQuizzInfoValues(this)">Prosseguir pra criar perguntas</button>
+            <button class = "forward basic-info" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>
         </div>
         <div class="new-questions-screen hidden">
             <span class = "title">Crie suas perguntas</span>
             <ul class="new-questions">
 
             </ul>
-            <button class = "forward" onclick="importNewQuizzQuestionsValues(thisButton)">Prosseguir para criar níveis</button>
+            <button class = "new-questions forward" onclick="importInputValues(this)">Prosseguir para criar níveis</button>
         </div>
         <div class="new-levels-screen hidden">
             <span class = "title">Agora, decida os níveis!</span>
@@ -162,7 +162,7 @@
                     </div>
                 </li>
             </ul>
-            <button class = "forward">Finalizar Quizz</button>
+            <button class = "forward new-questions">Finalizar Quizz</button>
         </div>
         <div class="quiz-successfully-created hidden">
             <span class = "title">Seu quizz está pronto!</span>
