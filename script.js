@@ -49,6 +49,7 @@ function switchToQuizz(quiz) {
             `<li class="option" onclick="selectAnswer(this)">
                 <img src="${randomAnswers[j].image}" alt="Option Imagem">
                 <span>${randomAnswers[j].text}</span>
+                <span class="value hidden">${randomAnswers[j].isCorrectAnswer}</span>
             </li>`;
         }
 
@@ -192,6 +193,13 @@ function selectAnswer (answer) {
     if (isAnswered === null) {
         for (let i = 0; i < answers.length; i++) {
             answers[i].classList.add("not-selected");
+
+            let value = answers[i].querySelector(".value").innerText;
+            if (value === "true") {
+                answers[i].classList.add("correct")
+            } else {
+                answers[i].classList.add("wrong") 
+            }
         }
     
         answer.classList.remove("not-selected");
