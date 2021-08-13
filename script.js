@@ -6,6 +6,7 @@ const newQuizzInfo = {
     numberOfQuestions: 0,
     numberOfLevels: 0
 };
+let questionsAnswered = 0;
 
 function thumbStructure(element) {
     return `<li class="quiz-thumb" onclick="playQuizz(${element.id})">
@@ -203,18 +204,29 @@ function selectAnswer (answer) {
         }
         answer.classList.remove("not-selected");
         setTimeout(scrollToNextQuestion, 2000, question.parentNode);
+        questionsAnswered++;
+        setTimeout(showResults, 2000); 
     }
 }
 
 function scrollToNextQuestion (question) {
     questions = document.querySelectorAll(".question");
-    console.log(question);
-    console.log(questions[0]);
 
     for (let i = 0; i < questions.length; i++) {
         if ((question === questions[i]) && (i + 1 < questions.length)) {
             questions[i + 1].scrollIntoView();
         }
+    }
+}
+
+function showResults () {
+    const questionsNumber = document.querySelectorAll(".question").length;
+    console.log(questionsNumber);
+
+    if (questionsAnswered === questionsNumber) {
+        const result = document.querySelector(".result");
+        result.classList.remove("hidden");
+        result.scrollIntoView();
     }
 }
 
