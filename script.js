@@ -44,6 +44,8 @@ function switchToQuizz(quiz) {
     const questions = document.querySelector(".quiz-questions");
     questions.innerHTML = "";
     levels = quiz.data.levels;
+    rightAnswers = 0;
+    questionsAnswered = 0;
 
     for (let i = 0; i < quiz.data.questions.length; i++) {
         let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
