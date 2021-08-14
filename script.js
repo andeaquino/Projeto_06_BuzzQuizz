@@ -17,6 +17,15 @@ let questionsAnswered = 0;
 let levels = [];
 let rightAnswers = 0;
 
+function loading() {
+    const loadingScreen = document.querySelector(".loading-screen");
+    console.log(loadingScreen);
+    loadingScreen.classList.remove("hidden");
+    setTimeout(() => {
+        loadingScreen.classList.add("hidden");
+    }, 2000);
+}
+
 function thumbStructure(element) {
     return `<li class="quiz-thumb" onclick="playQuizz(${element.id})">
                 <div class="thumb grad"></div>
@@ -60,6 +69,48 @@ function clearQuizz() {
     window.scrollTo(0, 0);
 }
 
+function printQuizz(quiz) {
+    const title = document.querySelector(".quiz-title");
+    title.innerText = quiz.data.title;
+    const banner = document.querySelector(".banner-image");
+    banner.src = quiz.data.image;
+    const questions = document.querySelector(".quiz-questions");
+    questions.innerHTML = "";
+    levels = quiz.data.levels;
+    for (let i = 0; i < quiz.data.questions.length; i++) {
+        let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
+        let answers = "";
+        for (let j = 0; j < randomAnswers.length; j++) {
+            answers += 
+            `<li class="option" onclick="selectAnswer(this)">
+                <img src="${randomAnswers[j].image}" alt="Option Imagem">
+                <span>${randomAnswers[j].text}</span>
+                <span class="value hidden">${randomAnswers[j].isCorrectAnswer}</span>
+            </li>`;
+        }
+        questions.innerHTML += 
+        `<div class="question">
+            <header class="question-title" style="background-color:${quiz.data.questions[i].color}">${quiz.data.questions[i].title}</header>
+            <ul class="answers">
+                ${answers}
+            </ul>
+        </div>`;
+    } 
+    clearQuizz();
+    switchPage("quiz-list", "quiz-page")
+}
+
+function switchPage(pageFrom, pageTo) {
+    document.querySelector(`.${pageFrom}`).classList.add("hidden");
+    document.querySelector(`.${pageTo}`).classList.remove("hidden");
+    loading();
+}
+
+function playQuizz(quizID) {
+    const promise = axios.get(URL_QUIZZ + "/" + quizID);
+    promise.then(printQuizz);
+}
+
 function showResults(questionsNumber) { 
     const score = Math.round((rightAnswers / questionsNumber) * 100);
     let level = 0;
@@ -88,53 +139,11 @@ function scrollToNextQuestion(question) {
     }
 }
 
-function switchToQuizz(quiz) {
-    const title = document.querySelector(".quiz-title");
-    title.innerText = quiz.data.title;
-    const banner = document.querySelector(".banner-image");
-    banner.src = quiz.data.image;
-    const questions = document.querySelector(".quiz-questions");
-    questions.innerHTML = "";
-    levels = quiz.data.levels;
-    clearQuizz();
-    for (let i = 0; i < quiz.data.questions.length; i++) {
-        let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
-        let answers = "";
-        for (let j = 0; j < randomAnswers.length; j++) {
-            answers += 
-            `<li class="option" onclick="selectAnswer(this)">
-                <img src="${randomAnswers[j].image}" alt="Option Imagem">
-                <span>${randomAnswers[j].text}</span>
-                <span class="value hidden">${randomAnswers[j].isCorrectAnswer}</span>
-            </li>`;
-        }
-        questions.innerHTML += 
-        `<section class="question">
-            <header class="question-title" style="background-color:${quiz.data.questions[i].color}">${quiz.data.questions[i].title}</header>
-            <ul class="answers">
-                ${answers}
-            </ul>
-        </section>`;
-        console.log(questions.innerHTML);
-    } 
-    switchPage("quiz-list", "quiz-page")
-}
-
-function switchPage(pageFrom, pageTo) {
-    document.querySelector(`.${pageFrom}`).classList.add("hidden");
-    document.querySelector(`.${pageTo}`).classList.remove("hidden");
-}
-
-function playQuizz(quizID) {
-    const promise = axios.get(URL_QUIZZ + "/" + quizID);
-    promise.then(switchToQuizz);
-}
-
 function selectAnswer(answer) {
     const question = answer.parentNode;
-    const answers = question.children;
     const isAnswered = question.querySelector(".not-selected");
     if (isAnswered === null) {
+        const answers = question.children;
         for (let i = 0; i < answers.length; i++) {
             answers[i].classList.add("not-selected");
             let value = answers[i].querySelector(".value").innerText;
@@ -151,8 +160,6 @@ function selectAnswer(answer) {
         setTimeout(scrollToNextQuestion, 2000, question.parentNode);
         questionsAnswered++;
         const questionsNumber = document.querySelectorAll(".question").length;
-        console.log(questionsAnswered);
-        console.log(questionsNumber);
         if (questionsAnswered === questionsNumber) {
             setTimeout(showResults, 2000, questionsNumber);
         }    
