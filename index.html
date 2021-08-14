@@ -16,15 +16,15 @@
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
 
-    <div class="quiz-list hidden">
-        <div class="empty-quiz-list hidden">
+    <div class="quiz-list">
+        <div class="empty-quiz-list">
             <span>Você não criou nenhum quizz ainda :(</span>
-            <div class="create-quiz-button" onclick="switchPage('quiz-list', 'new-quiz-screen')">Criar Quizz</div>
+            <div class="create-quiz-button" onclick="createBasicInfoScreen()">Criar Quizz</div>
         </div>
         <div class="your-quizzes hidden">
             <header>
                 <h1>Seus Quizzes</h1>
-                <ion-icon name="add-circle" onclick="switchPage('quiz-list', 'new-quiz-screen')"></ion-icon>
+                <ion-icon name="add-circle" onclick="createBasicInfoScreen()"></ion-icon>
             </header>
             <ul>
                 <li class="quiz-thumb">
@@ -72,38 +72,6 @@
     </main>
 
     <section class="new-quiz-screen hidden">
-        <div class ="basic-info-screen hidden">
-            <span class = "title">Comece pelo começo</span>
-            <div class = "new-basic-info">
-                <input type="text" placeholder="Título do seu quizz" name="quizz-title">
-                <input type="text" placeholder="URL da imagem do seu quizz" name="image-url">
-                <input type="text" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
-                <input type="text" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
-            </div>
-            <button class = "basic-info forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>
-        </div>
-        <div class="new-questions-screen hidden">
-            <span class = "title">Crie suas perguntas</span>
-            <ul class="new-questions">
-
-            </ul>
-            <button class = "new-questions forward" onclick="importInputValues(this)">Prosseguir para criar níveis</button>
-        </div>
-        <div class="new-levels-screen hidden">
-            <span class = "title">Agora, decida os níveis!</span>
-            <ul class="new-levels">
-
-            </ul>
-            <button class = "new-levels forward" onclick="importInputValues(this)">Finalizar Quizz</button>
-        </div>
-        <div class="quiz-successfully-created hidden">
-            <span class = "title">Seu quizz está pronto!</span>
-            <div class="new-quiz-layout">
-
-            </div>
-            <button class = "forward">Acessar Quizz</button>
-            <button class="return-homescreen">Voltar para home</button>
-        </div>
     </section>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

@@ -1,5 +1,6 @@
 const URL_QUIZZ = `https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes`;
 const newQuizzScreen = document.querySelector(".new-quiz-screen");
+const homeScreen = document.querySelector(".quiz-list");
 const newQuizzInfo = {
     title: "",
     image: "",
@@ -251,42 +252,56 @@ function printLevels () {
     return levels;
 }
 
-function printNewQuizz() {
-    newQuizz = `
-    <div class="grad"></div>
-    <img src="${newQuizzInfo.image}">
-    <span>${newQuizzInfo.title}</span>`;
-    console.log(newQuizzInfo);
-    return newQuizz
+function createBasicInfoScreen() {
+    homeScreen.classList.add("hidden");
+    newQuizzScreen.classList.remove("hidden");
+    newQuizzScreen.innerHTML = `
+    <div class ="basic-info-screen">
+        <span class = "title">Comece pelo começo</span>
+        <div class = "new-basic-info">
+            <input type="text" placeholder="Título do seu quizz" name="quizz-title">
+            <input type="text" placeholder="URL da imagem do seu quizz" name="image-url">
+            <input type="text" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
+            <input type="text" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
+        </div>
+        <button class = "basic-info forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>
+    </div>`;
 }
 
 function createNewQuestionsScreen() {
-    const basicInfoScreen = newQuizzScreen.querySelector(".basic-info-screen");
-    basicInfoScreen.classList.add("hidden");
-    const newQuestionsScreen = newQuizzScreen.querySelector(".new-questions-screen");
-    newQuestionsScreen.classList.remove("hidden");
-    const newQuestionsArea = newQuizzScreen.querySelector(".new-questions-screen .new-questions");
-    questions = printQuestions ()
-    newQuestionsArea.innerHTML = questions
+    newQuizzScreen.innerHTML = `
+    <div class="new-questions-screen">
+        <span class = "title">Crie suas perguntas</span>
+        <ul class="new-questions">
+            ${printQuestions()}
+        </ul>
+        <button class = "new-questions forward" onclick="importInputValues(this)">Prosseguir para criar níveis</button>
+    </div>`;
 }
 
 function createNewLevelsScreen() {
-    const newQuestionsScreen = newQuizzScreen.querySelector(".new-questions-screen");
-    newQuestionsScreen.classList.add("hidden");
-    const newLevelsScreen = newQuizzScreen.querySelector(".new-levels-screen");
-    newLevelsScreen.classList.remove("hidden");
-    const newLevelsArea = newQuizzScreen.querySelector(".new-levels-screen .new-levels");
-    levels = printLevels ()
-    newLevelsArea.innerHTML = levels
+    newQuizzScreen.innerHTML = `
+    <div class="new-levels-screen">
+        <span class = "title">Agora, decida os níveis!</span>
+        <ul class="new-levels">
+            ${printLevels()}
+        </ul>
+        <button class = "new-levels forward" onclick="importInputValues(this)">Finalizar Quizz</button>
+    </div>`;
 }
 
 function createSuccessfullyCreatedScreen() {
-    const newLevelsScreen = newQuizzScreen.querySelector(".new-levels-screen");
-    newLevelsScreen.classList.add("hidden");
-    const successfullyCreatedScreen = newQuizzScreen.querySelector(".quiz-successfully-created");
-    successfullyCreatedScreen.classList.remove("hidden");
-    const createdQuizz = newQuizzScreen.querySelector(".quiz-successfully-created .new-quiz-layout");
-    createdQuizz.innerHTML = printNewQuizz();
+    newQuizzScreen.innerHTML = `
+    <div class="quiz-successfully-created">
+        <span class = "title">Seu quizz está pronto!</span>
+        <div class="new-quiz-layout">
+            <div class="grad"></div>
+            <img src="${newQuizzInfo.image}">
+            <span>${newQuizzInfo.title}</span>
+        </div>
+        <button class = "forward">Acessar Quizz</button>
+        <button class="return-homescreen">Voltar para home</button>
+    </div>`
 }
 
 function validateImageURL(inputs,i,screenForwardButton) {
@@ -314,7 +329,7 @@ function validateSingleInput(inputs,i) {
         {name: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 3)},
         {name: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 2)},
         {name: "question-title", condition: (inputValue.length >= 20)},
-        {name: "question-background-color", condition: true },
+        {name: "question-background-color", condition: true},
         {name: "question-answer", condition: (inputValue.value !== "")},
         {name: "level-title", condition: (inputValue.length >= 10)},
         {name: "minimum-percentage", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 0 && Number(inputValue) <= 100)},
