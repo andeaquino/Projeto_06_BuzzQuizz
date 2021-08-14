@@ -47,7 +47,8 @@ function thumbStructure(element) {
             </li>`;
 }
 
-function updateQuizzes(promise) {
+function updateQuizzes(promise) { 
+    stopLoading();
     let text = "";
     for(i = 0; i < promise.data.length; i++) {
         text += thumbStructure(promise.data[i]);
@@ -58,6 +59,7 @@ function updateQuizzes(promise) {
 function getServerQuizzes() {
     const promise = axios.get(URL_QUIZZ);
     promise.then(updateQuizzes);
+    startLoading();
 }
 
 function randomize() { 
