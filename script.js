@@ -1,5 +1,8 @@
 const URL_QUIZZ = `https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes`;
 const newQuizzScreen = document.querySelector(".new-quizz-screen");
+const playQuizzScreen = document.querySelector(".quizz-page");
+const homeScreen = document.querySelector(".quizz-list");
+const loadingScreen = document.querySelector(".loading-screen");
 const newQuizzInfo = {
     quizzID:'',
     numberOfLevels:0,
@@ -16,12 +19,26 @@ let questionsAnswered = 0;
 let levels = [];
 let rightAnswers = 0;
 
-function loading() {
+function startLoading() {
     const loadingScreen = document.querySelector(".loading-screen");
     loadingScreen.classList.remove("hidden");
     setTimeout(() => {
-        loadingScreen.classList.add("hidden");
-    }, 2000);
+        if (loadingScreen.classList.contains("already-loaded")) {
+            loadingScreen.classList.add("hidden"); 
+            loadingScreen.classList.remove("already-loaded");   
+        } else {
+            loadingScreen.classList.add("still-loading");
+        }
+    }, 1500);
+}
+
+function stopLoading() {
+    const loadingScreen = document.querySelector(".loading-screen");
+    loadingScreen.classList.add("already-loaded");
+    if (loadingScreen.classList.contains("still-loading")) {
+        loadingScreen.classList.remove("hidden");
+        loadingScreen.classList.remove("still-loading");
+    }
 }
 
 function thumbStructure(element) {
@@ -32,7 +49,8 @@ function thumbStructure(element) {
             </li>`;
 }
 
-function updateQuizzes(promise) {
+function updateQuizzes(promise) { 
+    stopLoading();
     let text = "";
     for(i = 0; i < promise.data.length; i++) {
         text += thumbStructure(promise.data[i]);
@@ -43,6 +61,7 @@ function updateQuizzes(promise) {
 function getServerQuizzes() {
     const promise = axios.get(URL_QUIZZ);
     promise.then(updateQuizzes);
+    startLoading();
 }
 
 function randomize() { 
@@ -68,6 +87,7 @@ function clearQuizz() {
 }
 
 function printQuizz(quizz) {
+    stopLoading();
     const title = document.querySelector(".quizz-title");
     title.innerText = quizz.data.title;
     const banner = document.querySelector(".banner-image");
@@ -99,8 +119,6 @@ function printQuizz(quizz) {
 }
 
 function switchPage(pageTo) {
-    const playQuizzScreen = document.querySelector(".quizz-page");
-    const homeScreen = document.querySelector(".quizz-list");
     newQuizzScreen.classList.add("hidden");
     playQuizzScreen.classList.add("hidden");
     homeScreen.classList.add("hidden");
@@ -108,12 +126,12 @@ function switchPage(pageTo) {
         getServerQuizzes()
     }
     document.querySelector(`.${pageTo}`).classList.remove("hidden");
-    loading();
 }
 
 function playQuizz(quizzID) {
     const promise = axios.get(URL_QUIZZ + "/" + quizzID);
     promise.then(printQuizz);
+    startLoading();
 }
 
 function showResults(questionsNumber) { 
@@ -309,6 +327,7 @@ function createNewLevelsScreen() {
 
 function createSuccessfullyCreatedScreen(answer) {
     newQuizzInfo.quizzID = answer.data.id;
+    stopLoading();
     newQuizzScreen.innerHTML = `
     <div class="quizz-successfully-created">
         <span class = "title">Seu quizz está pronto!</span>
@@ -371,10 +390,12 @@ function moveToNextScreen(screenForwardButton) {
         quizzPromise = axios.post(URL_QUIZZ,newQuizzInfo.object);
         quizzPromise.then(createSuccessfullyCreatedScreen);
         quizzPromise.catch(uploadError);
+        startLoading();
     }
 }
 
 function uploadError() {
+    stopLoading();
     alert("Oh não! Parece que houve um erro :/ Nós sentimos muito! Por favor, tente novamente...");
     createBasicInfoScreen()
 }
