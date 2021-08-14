@@ -263,6 +263,15 @@ function printLevels () {
     return levels;
 }
 
+function printNewQuizz() {
+    newQuizz = `
+    <div class="grad"></div>
+    <img src="${newQuizzInfo.image}">
+    <span>${newQuizzInfo.title}</span>`;
+    console.log(newQuizzInfo);
+    return newQuizz
+}
+
 function createNewQuestionsScreen() {
     const basicInfoScreen = newQuizzScreen.querySelector(".basic-info-screen");
     basicInfoScreen.classList.add("hidden");
@@ -281,6 +290,15 @@ function createNewLevelsScreen() {
     const newLevelsArea = newQuizzScreen.querySelector(".new-levels-screen .new-levels");
     levels = printLevels ()
     newLevelsArea.innerHTML = levels
+}
+
+function createSuccessfullyCreatedScreen() {
+    const newLevelsScreen = newQuizzScreen.querySelector(".new-levels-screen");
+    newLevelsScreen.classList.add("hidden");
+    const successfullyCreatedScreen = newQuizzScreen.querySelector(".quiz-successfully-created");
+    successfullyCreatedScreen.classList.remove("hidden");
+    const createdQuizz = newQuizzScreen.querySelector(".quiz-successfully-created .new-quiz-layout");
+    createdQuizz.innerHTML = printNewQuizz();
 }
 
 function validateImageURL(inputs,i,screenForwardButton) {
@@ -306,7 +324,7 @@ function validateSingleInput(inputs,i) {
     const validation = [
         {name: "quizz-title", condition: (inputValue.length >= 20 && inputValue.length <= 65)},
         {name: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 1)},
-        {name: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 2)},
+        {name: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 1)},
         {name: "question-title", condition: (inputValue.length >= 20)},
         {name: "question-background-color", condition: true },
         {name: "question-answer", condition: (inputValue.value !== "")},
@@ -328,8 +346,8 @@ function moveToNextScreen(screenForwardButton) {
         createNewLevelsScreen();
     }
     if (screenForwardButton.classList.contains("new-levels")) {
-        alert("OPA!")
-        buttonDisableSwitch(screenForwardButton);
+        saveImportedNewLevelsValues(screenForwardButton)
+        createSuccessfullyCreatedScreen();
     }
 }
 
@@ -395,7 +413,7 @@ function saveImportedNewQuestionsValues(screenForwardButton) {
     for (let i = 0 ; i < newQuizzInfo.questions.length ; i++) {
         const thisQuestion = inputsArea.querySelector(`li:nth-of-type(${i+1})`) ;
         const questionInputs = Array.from(thisQuestion.querySelectorAll("input"));
-        questionObject = {
+        newQuizzInfo.questions[i] = {
             title: questionInputs[0].value,
             image:questionInputs[1].value,
             answers:[]
@@ -412,10 +430,23 @@ function saveImportedNewQuestionsValues(screenForwardButton) {
                 if (j === 0) {
                     answerObject.isCorrectAnswer = true;
                 }
-                questionObject.answers.push(answerObject);
+                newQuizzInfo.questions[i].answers.push(answerObject);
             }
         }
-        newQuizzInfo.questions[i] = questionObject;
+    }
+}
+
+function saveImportedNewLevelsValues(screenForwardButton) {
+    const inputsArea = screenForwardButton.parentNode;
+    for (let i = 0 ; i < newQuizzInfo.levels.length ; i++) {
+        const thisLevel = inputsArea.querySelector(`li:nth-of-type(${i+1})`) ;
+        const levelInputs = Array.from(thisLevel.querySelectorAll("input, textarea"));
+        newQuizzInfo.levels[i] = {
+            title: levelInputs[0].value,
+            minValue: Number(levelInputs[1].value),
+			image: levelInputs[2].value,
+			text: levelInputs[3].value
+        };
     }
 }
 
