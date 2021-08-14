@@ -311,8 +311,8 @@ function validateSingleInput(inputs,i) {
     const inputValue = inputs[i].value;
     const validation = [
         {name: "quizz-title", condition: (inputValue.length >= 20 && inputValue.length <= 65)},
-        {name: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 1)},
-        {name: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 1)},
+        {name: "number-of-questions", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 3)},
+        {name: "number-of-levels", condition: (!isNaN(Number(inputValue)) && Number(inputValue) >= 2)},
         {name: "question-title", condition: (inputValue.length >= 20)},
         {name: "question-background-color", condition: true },
         {name: "question-answer", condition: (inputValue.value !== "")},
