@@ -1,6 +1,5 @@
 const URL_QUIZZ = `https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes`;
-const newQuizzScreen = document.querySelector(".new-quiz-screen");
-const homeScreen = document.querySelector(".quiz-list");
+const newQuizzScreen = document.querySelector(".new-quizz-screen");
 const newQuizzInfo = {
     quizzID:'',
     numberOfLevels:0,
@@ -19,7 +18,6 @@ let rightAnswers = 0;
 
 function loading() {
     const loadingScreen = document.querySelector(".loading-screen");
-    console.log(loadingScreen);
     loadingScreen.classList.remove("hidden");
     setTimeout(() => {
         loadingScreen.classList.add("hidden");
@@ -27,10 +25,10 @@ function loading() {
 }
 
 function thumbStructure(element) {
-    return `<li class="quiz-thumb" onclick="playQuizz(${element.id})">
+    return `<li class="quizz-thumb" onclick="playQuizz(${element.id})">
                 <div class="thumb grad"></div>
                 <img src="${element.image}" alt="Test Image">
-                <h2 class="quiz-thumb-title">${element.title}</h2>
+                <h2 class="quizz-thumb-title">${element.title}</h2>
             </li>`;
 }
 
@@ -69,16 +67,16 @@ function clearQuizz() {
     window.scrollTo(0, 0);
 }
 
-function printQuizz(quiz) {
-    const title = document.querySelector(".quiz-title");
-    title.innerText = quiz.data.title;
+function printQuizz(quizz) {
+    const title = document.querySelector(".quizz-title");
+    title.innerText = quizz.data.title;
     const banner = document.querySelector(".banner-image");
-    banner.src = quiz.data.image;
-    const questions = document.querySelector(".quiz-questions");
+    banner.src = quizz.data.image;
+    const questions = document.querySelector(".quizz-questions");
     questions.innerHTML = "";
-    levels = quiz.data.levels;
-    for (let i = 0; i < quiz.data.questions.length; i++) {
-        let randomAnswers = quiz.data.questions[i].answers.sort(randomize);
+    levels = quizz.data.levels;
+    for (let i = 0; i < quizz.data.questions.length; i++) {
+        let randomAnswers = quizz.data.questions[i].answers.sort(randomize);
         let answers = "";
         for (let j = 0; j < randomAnswers.length; j++) {
             answers += 
@@ -90,24 +88,31 @@ function printQuizz(quiz) {
         }
         questions.innerHTML += 
         `<div class="question">
-            <header class="question-title" style="background-color:${quiz.data.questions[i].color}">${quiz.data.questions[i].title}</header>
+            <header class="question-title" style="background-color:${quizz.data.questions[i].color}">${quizz.data.questions[i].title}</header>
             <ul class="answers">
                 ${answers}
             </ul>
         </div>`;
     } 
     clearQuizz();
-    switchPage("quiz-list", "quiz-page")
+    switchPage("quizz-page")
 }
 
-function switchPage(pageFrom, pageTo) {
-    document.querySelector(`.${pageFrom}`).classList.add("hidden");
+function switchPage(pageTo) {
+    const playQuizzScreen = document.querySelector(".quizz-page");
+    const homeScreen = document.querySelector(".quizz-list");
+    newQuizzScreen.classList.add("hidden");
+    playQuizzScreen.classList.add("hidden");
+    homeScreen.classList.add("hidden");
+    if (pageTo === "quizz-list") {
+        getServerQuizzes()
+    }
     document.querySelector(`.${pageTo}`).classList.remove("hidden");
     loading();
 }
 
-function playQuizz(quizID) {
-    const promise = axios.get(URL_QUIZZ + "/" + quizID);
+function playQuizz(quizzID) {
+    const promise = axios.get(URL_QUIZZ + "/" + quizzID);
     promise.then(printQuizz);
 }
 
@@ -263,6 +268,8 @@ function printLevels () {
 }
 
 function createBasicInfoScreen() {
+
+    const homeScreen = document.querySelector(".quizz-list");
     homeScreen.classList.add("hidden");
     newQuizzScreen.classList.remove("hidden");
     newQuizzScreen.innerHTML = `
@@ -300,17 +307,18 @@ function createNewLevelsScreen() {
     </div>`;
 }
 
-function createSuccessfullyCreatedScreen() {
+function createSuccessfullyCreatedScreen(answer) {
+    newQuizzInfo.quizzID = answer.data.id;
     newQuizzScreen.innerHTML = `
-    <div class="quiz-successfully-created">
+    <div class="quizz-successfully-created">
         <span class = "title">Seu quizz está pronto!</span>
-        <div class="new-quiz-layout">
+        <div class="new-quizz-layout">
             <div class="grad"></div>
             <img src="${newQuizzInfo.object.image}">
             <span>${newQuizzInfo.object.title}</span>
         </div>
-        <button class = "forward" onclick="playQuizz(quizID)">Acessar Quizz</button>
-        <button class="return-homescreen" onclick="switchPage('new-quiz-screen','quiz-list')">Voltar para home</button>
+        <button class = "forward" onclick="playQuizz(newQuizzInfo.quizzID)">Acessar Quizz</button>
+        <button class="return-homescreen" onclick="switchPage('quizz-list')">Voltar para home</button>
     </div>`
 }
 

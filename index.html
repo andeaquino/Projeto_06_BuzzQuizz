@@ -16,10 +16,10 @@
 <body>
     <header class="buzz-quizz-title">BuzzQuizz</header>
 
-    <div class="quiz-list">
-        <div class="empty-quiz-list">
+    <div class="quizz-list">
+        <div class="empty-quizz-list">
             <span>Você não criou nenhum quizz ainda :(</span>
-            <div class="create-quiz-button" onclick="createBasicInfoScreen()">Criar Quizz</div>
+            <div class="create-quizz-button" onclick="createBasicInfoScreen()">Criar Quizz</div>
         </div>
         <div class="your-quizzes hidden">
             <header>
@@ -27,25 +27,25 @@
                 <ion-icon name="add-circle" onclick="createBasicInfoScreen()"></ion-icon>
             </header>
             <ul>
-                <li class="quiz-thumb">
+                <li class="quizz-thumb">
                     <div class="thumb grad"></div>
                     <img src="/media/Test-Image.jpg" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
+                    <h2 class="quizz-thumb-title">Título Teste do Quizz</h2>
                 </li>
-                <li class="quiz-thumb">
+                <li class="quizz-thumb">
                     <div class="thumb grad"></div>
                     <img src="/media/Test-Image.jpg" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
+                    <h2 class="quizz-thumb-title">Título Teste do Quizz</h2>
                 </li>
-                <li class="quiz-thumb">
+                <li class="quizz-thumb">
                     <div class="thumb grad"></div>
                     <img src="/media/Test-Image.jpg" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
+                    <h2 class="quizz-thumb-title">Título Teste do Quizz</h2>
                 </li>
-                <li class="quiz-thumb">
+                <li class="quizz-thumb">
                     <div class="thumb grad"></div>
                     <img src="/media/Test-Image.jpg" alt="Test Image">
-                    <h2 class="quiz-thumb-title">Título Teste do Quiz</h2>
+                    <h2 class="quizz-thumb-title">Título Teste do Quizz</h2>
                 </li>
             </ul>
         </div>
@@ -57,21 +57,21 @@
         </div>
     </div>
     
-    <main class="quiz-page hidden">
-        <header class="quiz-banner">
+    <main class="quizz-page hidden">
+        <header class="quizz-banner">
             <img class="banner-image" src="">
             <div class="shadow"></div>
-            <span class="quiz-title"></span>
+            <span class="quizz-title"></span>
         </header>
-        <section class="quiz-questions">
+        <section class="quizz-questions">
         </section>
         <section class="result hidden">
         </section>
         <button class="restart-button" onclick="clearQuizz()">Reiniciar Quizz</button>
-        <button class="home-button" onclick="switchPage('quiz-page', 'quiz-list')">Voltar pra home</button>
+        <button class="home-button" onclick="switchPage('quizz-list')">Voltar pra home</button>
     </main>
 
-    <section class="new-quiz-screen hidden">
+    <section class="new-quizz-screen hidden">
     </section>
 
     <div class="loading-screen hidden">
