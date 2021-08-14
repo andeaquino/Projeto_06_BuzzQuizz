@@ -17,13 +17,26 @@ let questionsAnswered = 0;
 let levels = [];
 let rightAnswers = 0;
 
-function loading() {
+function startLoading() {
     const loadingScreen = document.querySelector(".loading-screen");
-    console.log(loadingScreen);
     loadingScreen.classList.remove("hidden");
     setTimeout(() => {
-        loadingScreen.classList.add("hidden");
-    }, 2000);
+        if (loadingScreen.classList.contains("already-loaded")) {
+            loadingScreen.classList.add("hidden"); 
+            loadingScreen.classList.remove("already-loaded");   
+        } else {
+            loadingScreen.classList.add("still-loading");
+        }
+    }, 1500);
+}
+
+function stopLoading() {
+    const loadingScreen = document.querySelector(".loading-screen");
+    loadingScreen.classList.add("already-loaded");
+    if (loadingScreen.classList.contains("still-loading")) {
+        loadingScreen.classList.remove("hidden");
+        loadingScreen.classList.remove("still-loading");
+    }
 }
 
 function thumbStructure(element) {
@@ -70,6 +83,7 @@ function clearQuizz() {
 }
 
 function printQuizz(quiz) {
+    stopLoading();
     const title = document.querySelector(".quiz-title");
     title.innerText = quiz.data.title;
     const banner = document.querySelector(".banner-image");
@@ -103,12 +117,12 @@ function printQuizz(quiz) {
 function switchPage(pageFrom, pageTo) {
     document.querySelector(`.${pageFrom}`).classList.add("hidden");
     document.querySelector(`.${pageTo}`).classList.remove("hidden");
-    loading();
 }
 
 function playQuizz(quizID) {
     const promise = axios.get(URL_QUIZZ + "/" + quizID);
     promise.then(printQuizz);
+    startLoading();
 }
 
 function showResults(questionsNumber) { 
@@ -301,6 +315,7 @@ function createNewLevelsScreen() {
 }
 
 function createSuccessfullyCreatedScreen() {
+    stopLoading();
     newQuizzScreen.innerHTML = `
     <div class="quiz-successfully-created">
         <span class = "title">Seu quizz está pronto!</span>
@@ -363,10 +378,12 @@ function moveToNextScreen(screenForwardButton) {
         quizzPromise = axios.post(URL_QUIZZ,newQuizzInfo.object);
         quizzPromise.then(createSuccessfullyCreatedScreen);
         quizzPromise.catch(uploadError);
+        startLoading();
     }
 }
 
 function uploadError() {
+    stopLoading();
     alert("Oh não! Parece que houve um erro :/ Nós sentimos muito! Por favor, tente novamente...");
     createBasicInfoScreen()
 }
