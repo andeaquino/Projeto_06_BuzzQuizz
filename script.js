@@ -12,6 +12,15 @@ let questionsAnswered = 0;
 let levels = [];
 let rightAnswers = 0;
 
+function loading() {
+    const loadingScreen = document.querySelector(".loading-screen");
+    console.log(loadingScreen);
+    loadingScreen.classList.remove("hidden");
+    setTimeout(() => {
+        loadingScreen.classList.add("hidden");
+    }, 2000);
+}
+
 function thumbStructure(element) {
     return `<li class="quiz-thumb" onclick="playQuizz(${element.id})">
                 <div class="thumb grad"></div>
@@ -89,6 +98,7 @@ function printQuizz(quiz) {
 function switchPage(pageFrom, pageTo) {
     document.querySelector(`.${pageFrom}`).classList.add("hidden");
     document.querySelector(`.${pageTo}`).classList.remove("hidden");
+    loading();
 }
 
 function playQuizz(quizID) {
