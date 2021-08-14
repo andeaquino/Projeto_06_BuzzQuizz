@@ -2,10 +2,15 @@ const URL_QUIZZ = `https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/
 const newQuizzScreen = document.querySelector(".new-quiz-screen");
 const homeScreen = document.querySelector(".quiz-list");
 const newQuizzInfo = {
-    title: "",
-    image: "",
-    questions: [],
-    levels: []
+    quizzID:'',
+    numberOfLevels:0,
+    numberOfQuestions:0,
+    object:{
+        title: "",
+        image: "",
+        questions: [],
+        levels: []
+    }
 };
 const validationResults = [];
 let questionsAnswered = 0;
@@ -156,9 +161,7 @@ function selectAnswer(answer) {
 
 function animateButton(thisButton) {
     thisButton.classList.add("selected");
-    setTimeout(function() {
-        thisButton.classList.remove("selected");
-    },80);
+    setTimeout(() => thisButton.classList.remove("selected"),80);
 }
 
 function buttonDisableSwitch(thisButton) {
@@ -188,7 +191,7 @@ function editOption (thisButton) {
 function printQuestions () {
     let questions = ``;
     let questionClass;
-    for (let i = 0 ; i < newQuizzInfo.questions.length ; i++) {
+    for (let i = 0 ; i < newQuizzInfo.numberOfQuestions ; i++) {
         if (i===0) {
             questionClass = "selected";
         } else {
@@ -227,7 +230,7 @@ function printQuestions () {
 function printLevels () {
     let levels = ``;
     let levelsClass;
-    for (let i = 0 ; i < newQuizzInfo.levels.length ; i++) {
+    for (let i = 0 ; i < newQuizzInfo.numberOfLevels ; i++) {
         if (i===0) {
             levelsClass = "selected";
         } else {
@@ -243,7 +246,7 @@ function printLevels () {
             </div>
             <div class = "option-description">
                 <input type="text" placeholder="Título do nível" name="level-title">
-                <input type="text" placeholder="% de acerto" name="minimum-percentage">
+                <input type="number" placeholder="% de acerto" name="minimum-percentage">
                 <input type="text" placeholder="URL da imagem do nível" name="level-title">
                 <textarea id="story" placeholder="Descrição do nível" name="level-description" rows="5" cols="33"></textarea>
             </div>
@@ -261,8 +264,8 @@ function createBasicInfoScreen() {
         <div class = "new-basic-info">
             <input type="text" placeholder="Título do seu quizz" name="quizz-title">
             <input type="text" placeholder="URL da imagem do seu quizz" name="image-url">
-            <input type="text" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
-            <input type="text" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
+            <input type="number" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
+            <input type="number" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
         </div>
         <button class = "basic-info forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>
     </div>`;
@@ -296,11 +299,11 @@ function createSuccessfullyCreatedScreen() {
         <span class = "title">Seu quizz está pronto!</span>
         <div class="new-quiz-layout">
             <div class="grad"></div>
-            <img src="${newQuizzInfo.image}">
-            <span>${newQuizzInfo.title}</span>
+            <img src="${newQuizzInfo.object.image}">
+            <span>${newQuizzInfo.object.title}</span>
         </div>
-        <button class = "forward">Acessar Quizz</button>
-        <button class="return-homescreen">Voltar para home</button>
+        <button class = "forward" onclick="playQuizz(quizID)">Acessar Quizz</button>
+        <button class="return-homescreen" onclick="switchPage('new-quiz-screen','quiz-list')">Voltar para home</button>
     </div>`
 }
 
@@ -349,9 +352,16 @@ function moveToNextScreen(screenForwardButton) {
         createNewLevelsScreen();
     }
     if (screenForwardButton.classList.contains("new-levels")) {
-        saveImportedNewLevelsValues(screenForwardButton)
-        createSuccessfullyCreatedScreen();
+        saveImportedNewLevelsValues(screenForwardButton);
+        quizzPromise = axios.post(URL_QUIZZ,newQuizzInfo.object);
+        quizzPromise.then(createSuccessfullyCreatedScreen);
+        quizzPromise.catch(uploadError);
     }
+}
+
+function uploadError() {
+    alert("Oh não! Parece que houve um erro :/ Nós sentimos muito! Por favor, tente novamente...");
+    createBasicInfoScreen()
 }
 
 function validateAllInputs(screenForwardButton) {
@@ -401,24 +411,20 @@ function checkInputsValidation(inputs,screenForwardButton) {
 function saveImportedBasicInfoValues(screenForwardButton) {
     const inputsArea = screenForwardButton.parentNode;
     let inputs = Array.from(inputsArea.querySelectorAll("input"));
-    newQuizzInfo.title = inputs[0].value;
-    newQuizzInfo.image = inputs[1].value;
-    for (let i = 0 ; i < Number(inputs[2].value) ; i++) {
-        newQuizzInfo.questions.push({title:"", color:"", answers:[] });
-    }
-    for (let i = 0 ; i < Number(inputs[3].value) ; i++) {
-        newQuizzInfo.levels.push({title:"", image:"", text:"", minValue:0 });
-    }
+    newQuizzInfo.object.title = inputs[0].value;
+    newQuizzInfo.object.image = inputs[1].value;
+    newQuizzInfo.numberOfQuestions = Number( inputs[2].value);
+    newQuizzInfo.numberOfLevels = Number( inputs[3].value);
 }
 
 function saveImportedNewQuestionsValues(screenForwardButton) {
     const inputsArea = screenForwardButton.parentNode;
-    for (let i = 0 ; i < newQuizzInfo.questions.length ; i++) {
+    for (let i = 0 ; i < newQuizzInfo.numberOfQuestions ; i++) {
         const thisQuestion = inputsArea.querySelector(`li:nth-of-type(${i+1})`) ;
         const questionInputs = Array.from(thisQuestion.querySelectorAll("input"));
-        newQuizzInfo.questions[i] = {
+        newQuizzInfo.object.questions[i] = {
             title: questionInputs[0].value,
-            image:questionInputs[1].value,
+            color:questionInputs[1].value,
             answers:[]
         };
         for (let j = 0 ; j < 4 ; j++) {
@@ -433,7 +439,7 @@ function saveImportedNewQuestionsValues(screenForwardButton) {
                 if (j === 0) {
                     answerObject.isCorrectAnswer = true;
                 }
-                newQuizzInfo.questions[i].answers.push(answerObject);
+                newQuizzInfo.object.questions[i].answers.push(answerObject);
             }
         }
     }
@@ -441,10 +447,10 @@ function saveImportedNewQuestionsValues(screenForwardButton) {
 
 function saveImportedNewLevelsValues(screenForwardButton) {
     const inputsArea = screenForwardButton.parentNode;
-    for (let i = 0 ; i < newQuizzInfo.levels.length ; i++) {
+    for (let i = 0 ; i < newQuizzInfo.numberOfLevels ; i++) {
         const thisLevel = inputsArea.querySelector(`li:nth-of-type(${i+1})`) ;
         const levelInputs = Array.from(thisLevel.querySelectorAll("input, textarea"));
-        newQuizzInfo.levels[i] = {
+        newQuizzInfo.object.levels[i] = {
             title: levelInputs[0].value,
             minValue: Number(levelInputs[1].value),
 			image: levelInputs[2].value,
