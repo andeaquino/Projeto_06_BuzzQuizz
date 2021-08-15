@@ -7,6 +7,10 @@ body {
     background-color: #FAFAFA;
 }
 
+button, input[type='color'] {
+    cursor: pointer;
+}
+
 .buzz-quizz-title {
     background-color: #EC362D;
     width: 100%;
@@ -64,6 +68,7 @@ body {
     font-size: 21px;
     padding: 8px 24px;
     margin: 31px auto;
+    cursor: pointer;
 }
 
 .your-quizzes {
@@ -97,6 +102,7 @@ body {
     margin: 12px 15px 0px 0px;
     width: 340px;
     height: 181px;
+    cursor: pointer;
 }
 
 .quizz-thumb:nth-child(3n) {
@@ -205,6 +211,7 @@ body {
     background-color: #FF0000;
     font-size: 23px;
     font-weight: 700;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .quizz-page .question .question-title.black{
@@ -223,6 +230,7 @@ body {
     flex-direction: column;
     margin-right: 28px;
     margin-bottom: 12px; 
+    cursor: pointer;
 }
 
 .quizz-page .question .answers .option img {
