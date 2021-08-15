@@ -245,19 +245,29 @@ function printQuestions () {
             <div class = "option-description">
                 <div>
                     <input type="text" placeholder="Texto da pergunta" name="question-title">
+                    <p class="error hidden">A pergunta deve ter no mínimo 20 caracteres</p>
                     <input type="color" placeholder="Cor de fundo da pergunta" value="#FFFFFF" name="question-background-color">
+                    <p class="error hidden">Isso não é para aparecer</p>
                     <span>Cor de fundo da pergunta</span>
                 </div>
                 <span>Resposta correta</span>
                 <input type="text" placeholder="Resposta correta" name="question-answer">
+                <p class="error hidden">É necessária uma resposta correta</p>
                 <input type="text" placeholder="URL da imagem" name="image-url">
+                <p class="error hidden">O valor informado não é uma URL válida</p>
                 <span>Respostas incorretas</span>
                 <input type="text" placeholder="Resposta incorreta 1" name="question-answer">
+                <p class="error hidden">Esse campo precisa ser prenchido</p>
                 <input type="text" placeholder="URL da imagem 1" name="image-url">
+                <p class="error hidden">O valor informado não é uma URL válida</p>
                 <input type="text" placeholder="Resposta incorreta 2" name="question-answer">
+                <p class="error hidden">Esse campo precisa ser prenchido</p>
                 <input type="text" placeholder="URL da imagem 2" name="image-url">   
+                <p class="error hidden">O valor informado não é uma URL válida</p>
                 <input type="text" placeholder="Resposta incorreta 3" name="question-answer">
+                <p class="error hidden">Esse campo precisa ser prenchido</p>
                 <input type="text" placeholder="URL da imagem 3" name="image-url">
+                <p class="error hidden">O valor informado não é uma URL válida</p>
             </div>
         </li>`;   
     }
@@ -283,9 +293,13 @@ function printLevels () {
             </div>
             <div class = "option-description">
                 <input type="text" placeholder="Título do nível" name="level-title">
+                <p class="error hidden">O título deve ter no mínimo 10 caracteres</p>
                 <input type="number" placeholder="% de acerto" name="minimum-percentage">
+                <p class="error hidden">O número deve ser entre 0 e 100(sem repetir e com pelo menos um 0)</p>
                 <input type="text" placeholder="URL da imagem do nível" name="image-url">
+                <p class="error hidden">O valor informado não é uma URL válida</p>
                 <textarea id="story" placeholder="Descrição do nível" name="level-description" rows="5" cols="33"></textarea>
+                <p class="error hidden">A descrição de ter no mínimo 30 caracteres</p>
             </div>
         </li>`;   
     }
@@ -300,9 +314,13 @@ function createBasicInfoScreen() {
     <span class = "title">Comece pelo começo</span>
     <div class = "new-basic-info">
         <input type="text" placeholder="Título do seu quizz" name="quizz-title">
+        <p class="error hidden">O título deve ter entre 20 e 65 caracteres</p>
         <input type="text" placeholder="URL da imagem do seu quizz" name="image-url">
+        <p class="error hidden">O valor informado não é uma URL válida</p>
         <input type="number" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
+        <p class="error hidden">O quizz deve ter no mínimo 3 perguntas</p>
         <input type="number" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
+        <p class="error hidden">O quizz deve ter no mínimo 2 níveis</p>
     </div>
     <button class = "basic-info forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>`;
 }
@@ -361,13 +379,30 @@ function uploadError() {
     createBasicInfoScreen()
 }
 
+function displayError () {
+    const inputs = newQuizzScreen.querySelectorAll("input, textarea");
+    const spans = newQuizzScreen.querySelectorAll(".error");
+    for (let i = 0; i < inputsValidation.activeInputs.length; i++) {
+        for (let j = 0; (j < inputsValidation.validInputs.length || j === 0); j++) {
+            if (inputsValidation.activeInputs[i] !== inputsValidation.validInputs[j]) {
+                inputs[i].classList.add("input-error");
+                spans[i].classList.remove("hidden");
+            } else {
+                inputs[i].classList.remove("input-error");
+                spans[i].classList.add("hidden");
+                break;
+            }
+        }
+    }
+}
+
 function checkValidationAllInputs() {
     if (inputsValidation.totalAttempts === inputsValidation.attemptsCounter) {
         if (inputsValidation.activeInputs.length === inputsValidation.validInputs.length) {
             moveToNextScreen();
         } else {
             buttonDisableSwitch();
-            alert("Houve um erro na validação das entradas! Por favor tente novamente")
+            displayError();
         }
     }
 }
@@ -419,7 +454,7 @@ function isMinimumValuesValid(element,index,array) {
 
 function stageValidation(array, validationFunction) {
     const validActiveInputs = array.filter((element,index,array) => validationFunction(element,index,array));
-    inputsValidation.validInputs.push(...validActiveInputs)
+    inputsValidation.validInputs.push(...validActiveInputs);
 }
 
 function checkInputsValidation() {
@@ -435,6 +470,8 @@ function checkInputsValidation() {
     stageValidation(everyOtherInput, validateSingleInput);
 
     nonEmptyImageUrlInputs.forEach(element => validateImageURL(element))
+
+    checkValidationAllInputs();
 }
 
 function saveImportedBasicInfoValues() {

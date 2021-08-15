@@ -147,6 +147,7 @@ body {
 
 .quizz-page {
     margin-top: 69px;
+    word-break: break-word;
 }
 
 .quizz-page .quizz-banner {
@@ -490,6 +491,18 @@ input[type="color"] {
     color: #818181;
     font-size: 21px;
     margin-top: 16px;
+}
+
+.new-quizz-screen .error {
+    font-size: 16px;
+    color: #EC362D;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.new-quizz-screen .input-error {
+    background-color: #FFE9E9;
+    margin-bottom: 5px;
 }
 
 .loading-screen {
