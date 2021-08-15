@@ -551,6 +551,7 @@ input[type="color"] {
         height: 100%;
         margin-top: 20px;
         padding: 20px 15px 0;
+        scroll-margin: 39px;
     }
 
     .quizz-page .question .question-title {
@@ -587,6 +588,7 @@ input[type="color"] {
 
     .quizz-page .result {
         width: 100%;
+        scroll-margin: 39px;
     }
 
     .quizz-page .result .score {
