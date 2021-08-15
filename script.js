@@ -18,7 +18,6 @@ const inputsValidation = {
     activeInputs: [],
     totalAttempts:0,
     attemptsCounter: 0,
-    results: [],
     validInputs: [],
 }
 
@@ -283,7 +282,7 @@ function printLevels () {
             <div class = "option-description">
                 <input type="text" placeholder="Título do nível" name="level-title">
                 <input type="number" placeholder="% de acerto" name="minimum-percentage">
-                <input type="text" placeholder="URL da imagem do nível" name="level-title">
+                <input type="text" placeholder="URL da imagem do nível" name="image-url">
                 <textarea id="story" placeholder="Descrição do nível" name="level-description" rows="5" cols="33"></textarea>
             </div>
         </li>`;   
@@ -403,9 +402,9 @@ function validateImageURL(element) {
 }
 
 function isValidEmptyAnswer(element,i,array) {
-    const isValidEmptyText = ((i % 10 >=6) && element.value === "" && (i !== array.length-1) && array[i+1].name === "image-url" && array[i+1].value === ""); 
+    const isValidEmptyAnswer = ((i % 10 >=6) && element.value === "" && (i !== array.length-1) && array[i+1].name === "image-url" && array[i+1].value === ""); 
     const isValidEmptyUrl = ((i % 10 >=6) && element.value === "" && (i !== 0) && array[i-1].name === "question-answer" && array[i-1].value === ""); ;
-    return (isValidEmptyText || isValidEmptyUrl)
+    return (isValidEmptyAnswer || isValidEmptyUrl)
 }
 
 function isMinimumValuesValid(element,index,array) {
@@ -419,25 +418,21 @@ function isMinimumValuesValid(element,index,array) {
 function stageValidation(array, validationFunction) {
     const validActiveInputs = array.filter((element,index,array) => validationFunction(element,index,array));
     inputsValidation.validInputs.push(...validActiveInputs)
-    inputsValidation.attemptsCounter += 1;
 }
 
 function checkInputsValidation() {
-    inputsValidation.results.length = 0;
     inputsValidation.attemptsCounter = 0;
     inputsValidation.validInputs = [];
     const minPercentagesInputs = inputsValidation.activeInputs.filter( ({ name,value }) => name === "minimum-percentage" && value !== "");
     const nonEmptyImageUrlInputs = inputsValidation.activeInputs.filter( ({ name, value }) => name === "image-url" && value !== "");
     const everyOtherInput = inputsValidation.activeInputs.filter(element => !minPercentagesInputs.includes(element) && !nonEmptyImageUrlInputs.includes(element) && element.value !== "");
-    inputsValidation.totalAttempts = 3 + nonEmptyImageUrlInputs.length;
+    inputsValidation.totalAttempts = nonEmptyImageUrlInputs.length;
 
     stageValidation(inputsValidation.activeInputs, isValidEmptyAnswer);
     stageValidation(minPercentagesInputs, isMinimumValuesValid);
     stageValidation(everyOtherInput, validateSingleInput);
 
     nonEmptyImageUrlInputs.forEach(element => validateImageURL(element))
-
-    checkValidationAllInputs();
 }
 
 function saveImportedBasicInfoValues() {
@@ -492,7 +487,7 @@ function importInputValues(thisButton) {
     animateButton(thisButton);
     buttonDisableSwitch();
     inputsValidation.activeInputs = Array.from(newQuizzScreen.querySelectorAll("input, textarea"));
-    checkInputsValidation(thisButton);
+    checkInputsValidation();
 }
 
 getServerQuizzes();
