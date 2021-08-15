@@ -26,7 +26,6 @@ const currentQuizzInfo = {
     rightAnswers: 0
 };
 
-
 function startLoading() {
     loadingScreen.classList.remove("hidden");
     setTimeout(() => {
@@ -257,7 +256,7 @@ function buttonDisableSwitch() {
     }
 }
 
-function editOption (thisButton) {
+function editOption(thisButton) {
     const thisOption = thisButton.parentNode.parentNode;
     const thisUl = thisOption.parentNode;
     const selectedOption = thisUl.querySelector(".selected");
@@ -265,7 +264,7 @@ function editOption (thisButton) {
     thisOption.classList.add("selected")
 }
 
-function printQuestions () {
+function printQuestions() {
     let questions = ``;
     let questionClass;
     for (let i = 0 ; i < newQuizzInfo.numberOfQuestions ; i++) {
@@ -314,7 +313,7 @@ function printQuestions () {
     return questions;
 }
 
-function printLevels () {
+function printLevels() {
     let levels = ``;
     let levelsClass;
     for (let i = 0 ; i < newQuizzInfo.numberOfLevels ; i++) {
