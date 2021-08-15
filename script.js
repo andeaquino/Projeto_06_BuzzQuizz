@@ -55,18 +55,46 @@ function thumbStructure(element) {
             </li>`;
 }
 
-function updateQuizzes(promise) { 
-    stopLoading();
+function getUserQuizzes() {
+    let userIds;
+    if (localStorage.getItem("idBuzzQuizzArray")){
+        userIds = JSON.parse(localStorage.getItem("idBuzzQuizzArray"))
+    } else {
+        userIds = []
+        localStorage.setItem("idBuzzQuizzArray",JSON.stringify(userIds));
+    }
+    return userIds
+}
+
+function printUserQuizzes() {
+    const userIds = getUserQuizzes()
+    console.log(userIds)
+    if (userIds.length === 0) {
+        homeScreen.querySelector(".empty-quizz-list").classList.remove("hidden");
+        homeScreen.querySelector(".your-quizzes").classList.add("hidden");
+    } else {
+        homeScreen.querySelector(".empty-quizz-list").classList.add("hidden");
+        homeScreen.querySelector(".your-quizzes").classList.remove("hidden");
+    }
+}
+
+function printAllServerQuizzes(answer) {
     let text = "";
-    for(i = 0; i < promise.data.length; i++) {
-        text += thumbStructure(promise.data[i]);
+    for(i = 0; i < answer.data.length; i++) {
+        text += thumbStructure(answer.data[i]);
     }
     homeScreen.querySelector(".list-of-all-quizzes ul").innerHTML = text;
 }
 
+function printQuizzes(answer) { 
+    stopLoading();
+    printAllServerQuizzes(answer);
+    printUserQuizzes();
+}
+
 function getServerQuizzes() {
     const promise = axios.get(URL_QUIZZ);
-    promise.then(updateQuizzes);
+    promise.then(printQuizzes);
     startLoading();
 }
 
@@ -355,9 +383,16 @@ function createNewLevelsScreen() {
         <button class = "new-levels forward" onclick="importInputValues(this)">Finalizar Quizz</button>`;
 }
 
+function uploadUserQuizzId() {
+    const userIds = getUserQuizzes();
+    userIds.push(newQuizzInfo.quizzID);
+    localStorage.setItem("idBuzzQuizzArray",JSON.stringify(userIds))
+}
+
 function createSuccessfullyCreatedScreen(answer) {
     newQuizzInfo.quizzID = answer.data.id;
     stopLoading();
+    uploadUserQuizzId();
     newQuizzScreen.innerHTML = `
         <span class = "title">Seu quizz está pronto!</span>
         <div class="new-quizz-layout">
