@@ -19,11 +19,13 @@ const inputsValidation = {
     totalAttempts:0,
     attemptsCounter: 0,
     validInputs: [],
-}
+};
+const currentQuizzInfo = {
+    questionsAnswered: 0,
+    levels: [],
+    rightAnswers: 0
+};
 
-let questionsAnswered = 0;
-let levels = [];
-let rightAnswers = 0;
 
 function startLoading() {
     loadingScreen.classList.remove("hidden");
@@ -80,25 +82,25 @@ function clearClass(className) {
 }
 
 function clearQuizz() {
-    questionsAnswered = 0;
-    rightAnswers = 0;
+    currentQuizzInfo.questionsAnswered = 0;
+    currentQuizzInfo.rightAnswers = 0;
     clearClass("not-selected");
     clearClass("correct");
     clearClass("wrong");
-    const result = document.querySelector(".result");
+    const result = playQuizzScreen.querySelector(".result");
     result.classList.add("hidden");
     window.scrollTo(0, 0);
 }
 
 function printQuizz(quizz) {
     stopLoading();
-    const title = document.querySelector(".quizz-title");
+    const title = playQuizzScreen.querySelector(".quizz-title");
     title.innerText = quizz.data.title;
-    const banner = document.querySelector(".banner-image");
+    const banner = playQuizzScreen.querySelector(".banner-image");
     banner.src = quizz.data.image;
-    const questions = document.querySelector(".quizz-questions");
+    const questions = playQuizzScreen.querySelector(".quizz-questions");
     questions.innerHTML = "";
-    levels = quizz.data.levels;
+    currentQuizzInfo.levels = quizz.data.levels;
     for (let i = 0; i < quizz.data.questions.length; i++) {
         let randomAnswers = quizz.data.questions[i].answers.sort(randomize);
         let answers = "";
@@ -139,26 +141,26 @@ function playQuizz(quizzID) {
 }
 
 function showResults(questionsNumber) { 
-    const score = Math.round((rightAnswers / questionsNumber) * 100);
+    const score = Math.round((currentQuizzInfo.rightAnswers / questionsNumber) * 100);
     let level = 0;
-    for (let i = 0; i < levels.length; i++) {
-        if (score >= levels[i].minValue) {
+    for (let i = 0; i < currentQuizzInfo.levels.length; i++) {
+        if (score >= currentQuizzInfo.levels[i].minValue) {
             level = i;
         }
     }
-    const result = document.querySelector(".result");
+    const result = playQuizzScreen.querySelector(".result");
     result.innerHTML = `
-            <header class="score">${score}% de acerto: ${levels[level].title}</header>
+            <header class="score">${score}% de acerto: ${currentQuizzInfo.levels[level].title}</header>
             <div class="description">
-                <img src="${levels[level].image}" alt="Result Image">
-                <p>${levels[level].text}</p>
+                <img src="${currentQuizzInfo.levels[level].image}" alt="Result Image">
+                <p>${currentQuizzInfo.levels[level].text}</p>
             </div>`;
     result.classList.remove("hidden");
     result.scrollIntoView();
 }
 
 function scrollToNextQuestion(question) {
-    questions = document.querySelectorAll(".question");
+    questions = playQuizzScreen.querySelectorAll(".question");
     for (let i = 0; i < questions.length; i++) {
         if ((question === questions[i]) && (i + 1 < questions.length)) {
             questions[i + 1].scrollIntoView();
@@ -181,13 +183,13 @@ function selectAnswer(answer) {
             }
         }
         if (answer.querySelector(".value").innerText === "true") {
-            rightAnswers++;
+            currentQuizzInfo.rightAnswers++;
         }
         answer.classList.remove("not-selected");
         setTimeout(scrollToNextQuestion, 2000, question.parentNode);
-        questionsAnswered++;
-        const questionsNumber = document.querySelectorAll(".question").length;
-        if (questionsAnswered === questionsNumber) {
+        currentQuizzInfo.questionsAnswered++;
+        const questionsNumber = playQuizzScreen.querySelectorAll(".question").length;
+        if (currentQuizzInfo.questionsAnswered === questionsNumber) {
             setTimeout(showResults, 2000, questionsNumber);
         }    
     }
