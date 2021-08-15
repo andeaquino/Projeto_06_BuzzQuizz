@@ -140,13 +140,25 @@ function printQuizz(quizz) {
                 <span class="value hidden">${randomAnswers[j].isCorrectAnswer}</span>
             </li>`;
         }
-        questions.innerHTML += 
-        `<div class="question">
-            <header class="question-title" style="background-color:${quizz.data.questions[i].color}">${quizz.data.questions[i].title}</header>
-            <ul class="answers">
-                ${answers}
-            </ul>
-        </div>`;
+        if (quizz.data.questions[i].color.toLowerCase() === "#ffffff") {
+            questions.innerHTML += 
+            `<div class="question">
+                <header class="question-title black" style="background-color:${quizz.data.questions[i].color}">
+                <span>${quizz.data.questions[i].title}</span>
+                </header>
+                <ul class="answers">
+                    ${answers}
+                </ul>
+            </div>`;
+        } else {
+            questions.innerHTML += 
+            `<div class="question">
+                <header class="question-title" style="background-color:${quizz.data.questions[i].color}">${quizz.data.questions[i].title}</header>
+                <ul class="answers">
+                    ${answers}
+                </ul>
+            </div>`;
+        }
     } 
     clearQuizz();
     switchPage("quizz-page")
