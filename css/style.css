@@ -205,6 +205,10 @@ body {
     font-weight: 700;
 }
 
+.quizz-page .question .question-title.black{
+    color: black;
+}
+
 .quizz-page .question .answers {
     display: flex;
     flex-wrap: wrap;
