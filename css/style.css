@@ -126,6 +126,7 @@ body {
     font-weight: 400;
     font-size: 19px;
     color: #FFFFFF;
+    word-break: break-word;
 }
 
 .list-of-all-quizzes {
@@ -485,6 +486,7 @@ input[type="color"] {
     color: #FFFFFF;
     font-size: 23px;
     z-index: 3;
+    word-break: break-word;
 }
 
 .new-quizz-screen .return-homescreen {
