@@ -66,10 +66,11 @@ function getUserQuizzes() {
     return userIds
 }
 
-function printUserQuizzes() {
+function printUserQuizzes(serverQuizzes) {
     const userIds = getUserQuizzes()
-    console.log(userIds)
-    if (userIds.length === 0) {
+    const activeServerIds = serverQuizzes.map(({id}) => id)
+    const activeUserIds = userIds.filter(id => activeServerIds.includes(id))
+    if (activeUserIds.length === 0) {
         homeScreen.querySelector(".empty-quizz-list").classList.remove("hidden");
         homeScreen.querySelector(".your-quizzes").classList.add("hidden");
     } else {
@@ -78,18 +79,18 @@ function printUserQuizzes() {
     }
 }
 
-function printAllServerQuizzes(answer) {
+function printAllServerQuizzes(serverQuizzes) {
     let text = "";
-    for(i = 0; i < answer.data.length; i++) {
-        text += thumbStructure(answer.data[i]);
+    for(i = 0; i < serverQuizzes.length; i++) {
+        text += thumbStructure(serverQuizzes[i]);
     }
     homeScreen.querySelector(".list-of-all-quizzes ul").innerHTML = text;
 }
 
 function printQuizzes(answer) { 
     stopLoading();
-    printAllServerQuizzes(answer);
-    printUserQuizzes();
+    printAllServerQuizzes(answer.data);
+    printUserQuizzes(answer.data);
 }
 
 function getServerQuizzes() {
