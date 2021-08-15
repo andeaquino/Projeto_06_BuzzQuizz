@@ -65,36 +65,36 @@ function getUserQuizzes() {
     return userIds
 }
 
-function printUserQuizzes(serverQuizzes) {
-    const userIds = getUserQuizzes()
-    const activeServerIds = serverQuizzes.map(({id}) => id)
-    const activeUserIds = userIds.filter(id => activeServerIds.includes(id))
-    if (activeUserIds.length === 0) {
+function checkUserQuizzes(serverQuizzes) {
+    const userIds = getUserQuizzes();
+    const activeUserQuizzes = serverQuizzes.filter(({id}) => userIds.includes(id))
+    if (activeUserQuizzes.length === 0) {
         homeScreen.querySelector(".empty-quizz-list").classList.remove("hidden");
         homeScreen.querySelector(".your-quizzes").classList.add("hidden");
     } else {
         homeScreen.querySelector(".empty-quizz-list").classList.add("hidden");
         homeScreen.querySelector(".your-quizzes").classList.remove("hidden");
+        printHomeScreenThumbs(activeUserQuizzes,"your-quizzes");
     }
 }
 
-function printAllServerQuizzes(serverQuizzes) {
+function printHomeScreenThumbs(serverQuizzes,locationClass) {
     let text = "";
     for(i = 0; i < serverQuizzes.length; i++) {
         text += thumbStructure(serverQuizzes[i]);
     }
-    homeScreen.querySelector(".list-of-all-quizzes ul").innerHTML = text;
+    homeScreen.querySelector(`.${locationClass} ul`).innerHTML = text;
 }
 
-function printQuizzes(answer) { 
+function printHomeScreen(answer) { 
     stopLoading();
-    printAllServerQuizzes(answer.data);
-    printUserQuizzes(answer.data);
+    printHomeScreenThumbs(answer.data,"list-of-all-quizzes");
+    checkUserQuizzes(answer.data);
 }
 
 function getServerQuizzes() {
     const promise = axios.get(URL_QUIZZ);
-    promise.then(printQuizzes);
+    promise.then(printHomeScreen);
     startLoading();
 }
 
