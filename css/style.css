@@ -95,6 +95,8 @@ body {
 .quizz-thumb {
     position: relative;
     margin: 12px 15px 0px 0px;
+    width: 340px;
+    height: 181px;
 }
 
 .quizz-thumb:nth-child(3n) {
