@@ -46,23 +46,12 @@ function stopLoading() {
     }
 }
 
-function thumbStructure(element) {
+function thumbStructure(element,buttonsString) {
     return `<li class="quizz-thumb" onclick="playQuizz(${element.id})">
                 <div class="thumb grad"></div>
                 <img src="${element.image}" alt="Test Image">
                 <h2 class="quizz-thumb-title">${element.title}</h2>
-            </li>`;
-}
-
-function yourQuizzesThumbStructure(element) {
-    return `<li class="quizz-thumb">
-                <div class="thumb grad" onclick="playQuizz(${element.id})"></div>
-                <img src="${element.image}" alt="Test Image" onclick="playQuizz(${element.id})">
-                <h2 class="quizz-thumb-title" onclick="playQuizz(${element.id})">${element.title}</h2>
-                <div class="edit-options">
-                <img src="media/Edit-white.png" alt="Edit" onclick="show()">
-                <img src="media/trash.png" alt="Delete">
-                </div>
+                ${buttonsString}
             </li>`;
 }
 
@@ -96,14 +85,16 @@ function checkUserQuizzes(serverQuizzes) {
 
 function printHomeScreenThumbs(serverQuizzes,locationClass) {
     let text = "";
+    let buttonsString = "";
     if (locationClass === "your-quizzes") {
-        for(i = 0; i < serverQuizzes.length; i++) {
-            text += yourQuizzesThumbStructure(serverQuizzes[i]);
-        }
-    } else {
-        for(i = 0; i < serverQuizzes.length; i++) {
-            text += thumbStructure(serverQuizzes[i]);
-        }
+        buttonsString = `
+        <div class="edit-options">
+        <img src="media/Edit-white.png" alt="Edit" onclick="show()">
+        <img src="media/trash.png" alt="Delete">
+        </div>`;
+    }
+    for(i = 0; i < serverQuizzes.length; i++) {
+        text += thumbStructure(serverQuizzes[i],buttonsString);
     }
     homeScreen.querySelector(`.${locationClass} ul`).innerHTML = text;
 }
