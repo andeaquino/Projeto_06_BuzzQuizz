@@ -90,6 +90,7 @@ button, input[type='color'] {
     font-size: 30px;
     color: #EC362D;
     margin: auto 16px;
+    cursor: pointer;
 }
 
 .your-quizzes ul {
@@ -101,7 +102,7 @@ button, input[type='color'] {
     position: relative;
     margin: 12px 15px 0px 0px;
     width: 340px;
-    height: 181px;
+    height: 183px;
     cursor: pointer;
 }
 
