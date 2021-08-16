@@ -55,19 +55,16 @@ function thumbStructure(element) {
 }
 
 function yourQuizzesThumbStructure(element) {
+    console.log(element);
     return `<li class="quizz-thumb">
                 <div class="thumb grad" onclick="playQuizz(${element.id})"></div>
                 <img src="${element.image}" alt="Test Image" onclick="playQuizz(${element.id})">
                 <h2 class="quizz-thumb-title" onclick="playQuizz(${element.id})">${element.title}</h2>
                 <div class="edit-options">
                 <img src="media/Edit-white.png" alt="Edit" onclick="show()">
-                <img src="media/trash.png" alt="Delete">
+                <img src="media/trash.png" alt="Delete" onclick="deleteQuizz()">
                 </div>
             </li>`;
-}
-
-function show() {
-    console.log("oi");
 }
 
 function getUserQuizzes() {
@@ -596,6 +593,16 @@ function importInputValues(thisButton) {
     buttonDisableSwitch();
     inputsValidation.activeInputs = Array.from(newQuizzScreen.querySelectorAll("input, textarea"));
     checkInputsValidation();
+}
+
+function deleteQuizz() {
+    if(window.confirm("Você realmente quer deletar o quizz?")) {
+        axios.delete(URL_QUIZZ + "/" + quizzID, {
+            header: {
+                "Secret-Key": "oi"
+            }
+        });
+    }
 }
 
 getServerQuizzes();
