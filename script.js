@@ -3,6 +3,14 @@ const newQuizzScreen = document.querySelector(".new-quizz-screen");
 const playQuizzScreen = document.querySelector(".quizz-page");
 const homeScreen = document.querySelector(".quizz-list");
 const loadingScreen = document.querySelector(".loading-screen");
+let activeUserQuizzes;
+let activeQuizz = {
+    id:"",
+    title: "", 
+    image: "", 
+    questions: [],
+    levels: []
+};
 const newQuizzInfo = {
     quizzID:'',
     quizzKey:'',
@@ -58,9 +66,10 @@ function thumbStructure(element,buttonsString) {
 
 function editUserQuizz(id,key) {
     window.event.cancelBubble = "true"
-    console.log(id);
-    console.log(typeof(id));
-    console.log(key);
+    const thisQuizz = activeUserQuizzes.find(element => element.id === id);
+    console.log(thisQuizz)
+    thisQuizz.key = key;
+    createBasicInfoScreen(thisQuizz)
 }
 
 function getUserQuizzes() {
@@ -77,7 +86,7 @@ function getUserQuizzes() {
 function checkUserQuizzes(serverQuizzes) {
     const userIds = getUserQuizzes().ids;
     const userKeys = getUserQuizzes().keys;
-    const activeUserQuizzes = serverQuizzes.filter(({id}) => userIds.includes(id))
+    activeUserQuizzes = serverQuizzes.filter(({id}) => userIds.includes(id))
     if (activeUserQuizzes.length === 0) {
         homeScreen.querySelector(".empty-quizz-list").classList.remove("hidden");
         homeScreen.querySelector(".your-quizzes").classList.add("hidden");
@@ -289,6 +298,17 @@ function printQuestions() {
     let questions = ``;
     let questionClass;
     for (let i = 0 ; i < newQuizzInfo.numberOfQuestions ; i++) {
+        if(!activeQuizz.title) {
+            activeQuizz.questions.push({
+                title:"",
+                color:"#ffffff",
+                answers:[{text:"", image:""},{text:"", image:""},{text:"", image:""},{text:"", image:""}]
+            })
+        
+        } else {
+            activeQuizz.questions[i].answers.push({text:"", image:""});
+            activeQuizz.questions[i].answers.push({text:"", image:""});
+        }
         if (i===0) {
             questionClass = "selected";
         } else {
@@ -304,29 +324,29 @@ function printQuestions() {
             </div>
             <div class = "option-description">
                 <div>
-                    <input type="text" placeholder="Texto da pergunta" name="question-title">
+                    <input type="text" placeholder="Texto da pergunta" name="question-title" value = ${activeQuizz.questions[i].title}>
                     <p class="error hidden">A pergunta deve ter no mínimo 20 caracteres</p>
-                    <input type="color" placeholder="Cor de fundo da pergunta" value="#FFFFFF" name="question-background-color">
+                    <input type="color" placeholder="Cor de fundo da pergunta" name="question-background-color" value = ${activeQuizz.questions[i].color}>
                     <p class="error hidden">Isso não é para aparecer</p>
                     <span>Cor de fundo da pergunta</span>
                 </div>
                 <span>Resposta correta</span>
-                <input type="text" placeholder="Resposta correta" name="question-answer">
+                <input type="text" placeholder="Resposta correta" name="question-answer" value= ${activeQuizz.questions[i].answers[0].text}>
                 <p class="error hidden">É necessária uma resposta correta</p>
-                <input type="text" placeholder="URL da imagem" name="image-url">
+                <input type="text" placeholder="URL da imagem" name="image-url" value= ${activeQuizz.questions[i].answers[0].image}>
                 <p class="error hidden">O valor informado não é uma URL válida</p>
                 <span>Respostas incorretas</span>
-                <input type="text" placeholder="Resposta incorreta 1" name="question-answer">
+                <input type="text" placeholder="Resposta incorreta 1" name="question-answer" value= ${activeQuizz.questions[i].answers[1].text}>
                 <p class="error hidden">Esse campo precisa ser prenchido</p>
-                <input type="text" placeholder="URL da imagem 1" name="image-url">
+                <input type="text" placeholder="URL da imagem 1" name="image-url"value= ${activeQuizz.questions[i].answers[1].image}>
                 <p class="error hidden">O valor informado não é uma URL válida</p>
-                <input type="text" placeholder="Resposta incorreta 2" name="question-answer">
+                <input type="text" placeholder="Resposta incorreta 2" name="question-answer" value= ${activeQuizz.questions[i].answers[2].text}>
                 <p class="error hidden">Esse campo precisa ser prenchido</p>
-                <input type="text" placeholder="URL da imagem 2" name="image-url">   
+                <input type="text" placeholder="URL da imagem 2" name="image-url"value= ${activeQuizz.questions[i].answers[2].image}>   
                 <p class="error hidden">O valor informado não é uma URL válida</p>
-                <input type="text" placeholder="Resposta incorreta 3" name="question-answer">
+                <input type="text" placeholder="Resposta incorreta 3" name="question-answer" value= ${activeQuizz.questions[i].answers[3].text}>
                 <p class="error hidden">Esse campo precisa ser prenchido</p>
-                <input type="text" placeholder="URL da imagem 3" name="image-url">
+                <input type="text" placeholder="URL da imagem 3" name="image-url"value= ${activeQuizz.questions[i].answers[3].image}>
                 <p class="error hidden">O valor informado não é uma URL válida</p>
             </div>
         </li>`;   
@@ -338,6 +358,14 @@ function printLevels() {
     let levels = ``;
     let levelsClass;
     for (let i = 0 ; i < newQuizzInfo.numberOfLevels ; i++) {
+        if(!activeQuizz.title) {
+            activeQuizz.levels.push({
+                title:"",
+                image:"",
+                minValue: "",
+                text:""
+            });
+        }
         if (i===0) {
             levelsClass = "selected";
         } else {
@@ -352,13 +380,13 @@ function printLevels() {
                 </button>
             </div>
             <div class = "option-description">
-                <input type="text" placeholder="Título do nível" name="level-title">
+                <input type="text" placeholder="Título do nível" name="level-title" value = ${activeQuizz.levels[i].title}>
                 <p class="error hidden">O título deve ter no mínimo 10 caracteres</p>
-                <input type="number" placeholder="% de acerto" name="minimum-percentage">
+                <input type="number" placeholder="% de acerto" name="minimum-percentage" value = ${activeQuizz.levels[i].minValue}>
                 <p class="error hidden">O número deve ser entre 0 e 100(sem repetir e com pelo menos um 0)</p>
-                <input type="text" placeholder="URL da imagem do nível" name="image-url">
+                <input type="text" placeholder="URL da imagem do nível" name="image-url" value = ${activeQuizz.levels[i].image}>
                 <p class="error hidden">O valor informado não é uma URL válida</p>
-                <textarea id="story" placeholder="Descrição do nível" name="level-description" rows="5" cols="33"></textarea>
+                <textarea id="story" placeholder="Descrição do nível" name="level-description" rows="5" cols="33">${activeQuizz.levels[i].text}</textarea>
                 <p class="error hidden">A descrição de ter no mínimo 30 caracteres</p>
             </div>
         </li>`;   
@@ -366,20 +394,36 @@ function printLevels() {
     return levels;
 }
 
-function createBasicInfoScreen() {
+function createBasicInfoScreen(previousQuizz) {
+    let questionsValue = "";
+    let levelsValue = "";
+    if (!previousQuizz){
+        activeQuizz = {
+        id:"",
+        key:"",
+        title: "", 
+        image: "", 
+        questions: [],
+        levels: []
+        }
+    } else {
+        activeQuizz = previousQuizz;
+        questionsValue = previousQuizz.questions.length;
+        levelsValue = previousQuizz.levels.length;
+    }
     const homeScreen = document.querySelector(".quizz-list");
     homeScreen.classList.add("hidden");
     newQuizzScreen.classList.remove("hidden");
     newQuizzScreen.innerHTML = `
     <span class = "title">Comece pelo começo</span>
     <div class = "new-basic-info">
-        <input type="text" placeholder="Título do seu quizz" name="quizz-title">
+        <input type="text" placeholder="Título do seu quizz" name="quizz-title" value ="${activeQuizz.title}">
         <p class="error hidden">O título deve ter entre 20 e 65 caracteres</p>
-        <input type="text" placeholder="URL da imagem do seu quizz" name="image-url">
+        <input type="text" placeholder="URL da imagem do seu quizz" name="image-url" value ="${activeQuizz.image}">
         <p class="error hidden">O valor informado não é uma URL válida</p>
-        <input type="number" placeholder="Quantidade de perguntas do quizz" name="number-of-questions">
+        <input type="number" placeholder="Quantidade de perguntas do quizz" name="number-of-questions" value ="${questionsValue}">
         <p class="error hidden">O quizz deve ter no mínimo 3 perguntas</p>
-        <input type="number" placeholder="Quantidade de níveis do quizz" name="number-of-levels">
+        <input type="number" placeholder="Quantidade de níveis do quizz" name="number-of-levels" value ="${levelsValue}">
         <p class="error hidden">O quizz deve ter no mínimo 2 níveis</p>
     </div>
     <button class = "basic-info forward" onclick="importInputValues(this)">Prosseguir pra criar perguntas</button>`;
@@ -435,7 +479,18 @@ function moveToNextScreen() {
         createNewLevelsScreen();
     }else if (newQuizzScreen.querySelector(".new-levels")) {
         saveImportedNewLevelsValues();
-        quizzPromise = axios.post(URL_QUIZZ,newQuizzInfo.object);
+        let quizzPromise;
+        if(activeQuizz.title) {
+            quizzPromise = axios.put(
+                URL_QUIZZ + `/${activeQuizz.id}`, 
+                newQuizzInfo.object, 
+                {headers: 
+                    {"Secret-Key": String(activeQuizz.key)}
+                });
+        } else {
+            quizzPromise = axios.post(URL_QUIZZ,newQuizzInfo.object);
+        }
+
         quizzPromise.then(createSuccessfullyCreatedScreen);
         quizzPromise.catch(uploadError);
         startLoading();
@@ -445,7 +500,7 @@ function moveToNextScreen() {
 function uploadError() {
     stopLoading();
     alert("Oh não! Parece que houve um erro :/ Nós sentimos muito! Por favor, tente novamente...");
-    createBasicInfoScreen()
+    switchPage("quizz-list")
 }
 
 function displayError () {
