@@ -54,6 +54,22 @@ function thumbStructure(element) {
             </li>`;
 }
 
+function yourQuizzesThumbStructure(element) {
+    return `<li class="quizz-thumb">
+                <div class="thumb grad" onclick="playQuizz(${element.id})"></div>
+                <img src="${element.image}" alt="Test Image" onclick="playQuizz(${element.id})">
+                <h2 class="quizz-thumb-title" onclick="playQuizz(${element.id})">${element.title}</h2>
+                <div class="edit-options">
+                <img src="media/Edit-white.png" alt="Edit" onclick="show()">
+                <img src="media/trash.png" alt="Delete">
+                </div>
+            </li>`;
+}
+
+function show() {
+    console.log("oi");
+}
+
 function getUserQuizzes() {
     let userIds;
     if (localStorage.getItem("idBuzzQuizzArray")){
@@ -80,8 +96,14 @@ function checkUserQuizzes(serverQuizzes) {
 
 function printHomeScreenThumbs(serverQuizzes,locationClass) {
     let text = "";
-    for(i = 0; i < serverQuizzes.length; i++) {
-        text += thumbStructure(serverQuizzes[i]);
+    if (locationClass === "your-quizzes") {
+        for(i = 0; i < serverQuizzes.length; i++) {
+            text += yourQuizzesThumbStructure(serverQuizzes[i]);
+        }
+    } else {
+        for(i = 0; i < serverQuizzes.length; i++) {
+            text += thumbStructure(serverQuizzes[i]);
+        }
     }
     homeScreen.querySelector(`.${locationClass} ul`).innerHTML = text;
 }
