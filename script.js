@@ -56,9 +56,11 @@ function thumbStructure(element,buttonsString) {
             </li>`;
 }
 
-function editUserQuizz(thisImg) {
+function editUserQuizz(id,key) {
     window.event.cancelBubble = "true"
-    console.log(thisImg.id);
+    console.log(id);
+    console.log(typeof(id));
+    console.log(key);
 }
 
 function getUserQuizzes() {
@@ -74,6 +76,7 @@ function getUserQuizzes() {
 
 function checkUserQuizzes(serverQuizzes) {
     const userIds = getUserQuizzes().ids;
+    const userKeys = getUserQuizzes().keys;
     const activeUserQuizzes = serverQuizzes.filter(({id}) => userIds.includes(id))
     if (activeUserQuizzes.length === 0) {
         homeScreen.querySelector(".empty-quizz-list").classList.remove("hidden");
@@ -81,17 +84,17 @@ function checkUserQuizzes(serverQuizzes) {
     } else {
         homeScreen.querySelector(".empty-quizz-list").classList.add("hidden");
         homeScreen.querySelector(".your-quizzes").classList.remove("hidden");
-        printHomeScreenThumbs(activeUserQuizzes,"your-quizzes");
+        printHomeScreenThumbs(activeUserQuizzes,"your-quizzes",userKeys);
     }
 }
 
-function printHomeScreenThumbs(quizzes,locationClass) {
+function printHomeScreenThumbs(quizzes,locationClass,userKeys) {
     let text = "";
     let buttonsString = "";
     for(i = 0; i < quizzes.length; i++) {
         if (locationClass === "your-quizzes") {
             buttonsString = `
-            <button class="your-quizzes-options edit-option" id="${quizzes[i].id}" onclick="editUserQuizz(this)">
+            <button class="your-quizzes-options edit-option" onclick="editUserQuizz(${quizzes[i].id},'${userKeys[i]}')">
                 <img src="media/Edit-white.png" alt="Edit">
             </button>
             <button class="your-quizzes-options delete-option" onclick="deleteQuizz(${quizzes[i].id}, ${quizzes[i].key})">
