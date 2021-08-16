@@ -98,26 +98,33 @@ button, input[type='color'] {
     flex-wrap: wrap;
 }
 
-.your-quizzes .edit-options {
+.your-quizzes .your-quizzes-options {
     position: absolute;
     width: 43px;
-    height: 85px;
-    top: 10px;
+    height: 42px;
     right: 0;
     background-color: #EC362D;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    cursor: initial; 
+    cursor: pointer;
+    pointer-events: all;
 }
 
-.your-quizzes .edit-options img {
+.your-quizzes .your-quizzes-options img {
     width: 20px;
     height: 22px;
-    cursor: pointer;
+}
+
+.your-quizzes .your-quizzes-options.edit-option{
+    top: 10px;
+    border-top-left-radius: 10px;
+}
+
+.your-quizzes .your-quizzes-options.delete-option {
+    top: 52px;
+    border-bottom-left-radius: 10px;
 }
 
 .quizz-thumb {
