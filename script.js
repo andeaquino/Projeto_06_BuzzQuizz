@@ -106,8 +106,8 @@ function printHomeScreenThumbs(quizzes,locationClass,userKeys) {
             <button class="your-quizzes-options edit-option" onclick="editUserQuizz(${quizzes[i].id},'${userKeys[i]}')">
                 <img src="media/Edit-white.png" alt="Edit">
             </button>
-            <button class="your-quizzes-options delete-option">
-                <img src="media/trash.png" id="${quizzes[i].id}" alt="Delete">
+            <button class="your-quizzes-options delete-option" onclick="deleteUserQuizz(${quizzes[i].id},'${userKeys[i]}')">
+                <img src="media/trash.png" alt="Delete">
             </button>`;
         }
         text += thumbStructure(quizzes[i],buttonsString);
@@ -651,6 +651,31 @@ function importInputValues(thisButton) {
     buttonDisableSwitch();
     inputsValidation.activeInputs = Array.from(newQuizzScreen.querySelectorAll("input, textarea"));
     checkInputsValidation();
+}
+
+function deleteValue (array, value) {
+    for (let i = 0; i < array.length; i++) {
+        if(array[i] === value) {
+            array.splice(i, 1);
+        }
+    }
+    return array;
+}
+
+function deleteUserQuizz(id, key) {
+    window.event.cancelBubble = "true";
+    if(window.confirm("Você realmente quer deletar o quizz?")) {
+        const promise = axios.delete(URL_QUIZZ + "/" + String(id), {
+            headers: {
+                "Secret-Key": String(key)
+            }
+        });
+        const storage = JSON.parse(localStorage.getItem("idBuzzQuizzArray"));
+        storage.ids = deleteValue(storage.ids, id);
+        storage.keys = deleteValue(storage.keys, key);
+        localStorage.setItem("idBuzzQuizzArray",JSON.stringify(storage));
+        promise.then(getServerQuizzes);
+    }
 }
 
 getServerQuizzes();
