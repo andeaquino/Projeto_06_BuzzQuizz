@@ -5,6 +5,7 @@ const homeScreen = document.querySelector(".quizz-list");
 const loadingScreen = document.querySelector(".loading-screen");
 const newQuizzInfo = {
     quizzID:'',
+    quizzKey:'',
     numberOfLevels:0,
     numberOfQuestions:0,
     object:{
@@ -55,19 +56,24 @@ function thumbStructure(element,buttonsString) {
             </li>`;
 }
 
+function editUserQuizz(thisImg) {
+    window.event.cancelBubble = "true"
+    console.log(thisImg.id);
+}
+
 function getUserQuizzes() {
-    let userIds;
+    let userInfo;
     if (localStorage.getItem("idBuzzQuizzArray")){
-        userIds = JSON.parse(localStorage.getItem("idBuzzQuizzArray"))
+        userInfo = JSON.parse(localStorage.getItem("idBuzzQuizzArray"))
     } else {
-        userIds = []
-        localStorage.setItem("idBuzzQuizzArray",JSON.stringify(userIds));
+        userInfo = {ids:[],keys:[]}
+        localStorage.setItem("idBuzzQuizzArray",JSON.stringify(userInfo));
     }
-    return userIds;
+    return userInfo
 }
 
 function checkUserQuizzes(serverQuizzes) {
-    const userIds = getUserQuizzes();
+    const userIds = getUserQuizzes().ids;
     const activeUserQuizzes = serverQuizzes.filter(({id}) => userIds.includes(id))
     if (activeUserQuizzes.length === 0) {
         homeScreen.querySelector(".empty-quizz-list").classList.remove("hidden");
@@ -79,18 +85,20 @@ function checkUserQuizzes(serverQuizzes) {
     }
 }
 
-function printHomeScreenThumbs(serverQuizzes,locationClass) {
+function printHomeScreenThumbs(quizzes,locationClass) {
     let text = "";
     let buttonsString = "";
-    if (locationClass === "your-quizzes") {
-        buttonsString = `
-        <div class="edit-options">
-        <img src="media/Edit-white.png" alt="Edit" onclick="show()">
-        <img src="media/trash.png" alt="Delete" onclick="deleteQuizz()">
-        </div>`;
-    }
-    for(i = 0; i < serverQuizzes.length; i++) {
-        text += thumbStructure(serverQuizzes[i],buttonsString);
+    for(i = 0; i < quizzes.length; i++) {
+        if (locationClass === "your-quizzes") {
+            buttonsString = `
+            <button class="your-quizzes-options edit-option" id="${quizzes[i].id}" onclick="editUserQuizz(this)">
+                <img src="media/Edit-white.png" alt="Edit">
+            </button>
+            <button class="your-quizzes-options delete-option" onclick="deleteQuizz(${quizzes[i].id}, ${quizzes[i].key})">
+                <img src="media/trash.png" id="${quizzes[i].id}" alt="Delete">
+            </button>`;
+        }
+        text += thumbStructure(quizzes[i],buttonsString);
     }
     homeScreen.querySelector(`.${locationClass} ul`).innerHTML = text;
 }
@@ -393,13 +401,15 @@ function createNewLevelsScreen() {
 }
 
 function uploadUserQuizzId() {
-    const userIds = getUserQuizzes();
-    userIds.push(newQuizzInfo.quizzID);
-    localStorage.setItem("idBuzzQuizzArray",JSON.stringify(userIds))
+    const userInfo =getUserQuizzes();
+    userInfo.ids.push(newQuizzInfo.quizzID);
+    userInfo.keys.push(newQuizzInfo.quizzKey);
+    localStorage.setItem("idBuzzQuizzArray",JSON.stringify(userInfo));
 }
 
 function createSuccessfullyCreatedScreen(answer) {
     newQuizzInfo.quizzID = answer.data.id;
+    newQuizzInfo.quizzKey = answer.data.key;
     stopLoading();
     uploadUserQuizzId();
     newQuizzScreen.innerHTML = `
@@ -585,12 +595,12 @@ function importInputValues(thisButton) {
     checkInputsValidation();
 }
 
-function deleteQuizz() {
+function deleteQuizz(id, key) {
     window.event.cancelBubble = "true";
     if(window.confirm("Você realmente quer deletar o quizz?")) {
-        axios.delete(URL_QUIZZ + "/" + quizzID, {
+        axios.delete(URL_QUIZZ + "/" + id, {
             header: {
-                "Secret-Key": `${quizzKey}`
+                "Secret-Key": key
             }
         });
     }
